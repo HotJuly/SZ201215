@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>02_数据代理_vue</title>
+  </head>
+  <body>
+    <div id="app">
+      <p>{{msg}}</p>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      const vm = new Vue({
+        el: "#app",
+        data: {
+          msg: "hello vue",
+        },
+      });
+
+      console.log(vm.msg);
+
+      console.log(vm._data.msg);
+    </script>
+  </body>
+</html>

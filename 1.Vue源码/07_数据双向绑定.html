@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>07_数据双向绑定</title>
+  </head>
+  <body>
+    <div id="app">
+      <input v-model="person.name" />
+      <p>{{msg}}</p>
+    </div>
+    <script src="./js/observer.js"></script>
+    <script src="./js/watcher.js"></script>
+    <script src="./js/compile.js"></script>
+    <script src="./js/mvvm.js"></script>
+    <script>
+      new MVVM({
+        // el: "#app",
+        el: document.getElementById("app"),
+        data: {
+          msg: "hello mvvm",
+        }
+      });
+    </script>
+  </body>
+</html>
