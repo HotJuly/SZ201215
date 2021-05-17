@@ -7,28 +7,58 @@
   <body>
     <div id="app">
       <div>{{msg}}</div>
-      <div>{{person.name}}</div>
+      <div>{{person.name}}
+        <p>123</p>
+      </div>
     </div>
     <script src="./js/observer.js"></script>
     <script src="./js/watcher.js"></script>
     <script src="./js/compile.js"></script>
     <script src="./js/mvvm.js"></script>
     <script>
-      debugger
-      var vm=new MVVM({
-        el: "#app",
-        data: {
-          msg: "hello MVVM",
-          person: {
-            name: "jack",
-          },
-        }
-      });
+      /*
+        模版解析之插值语法替换
+          1.判断options中的el是否是DOM节点,如果是就保留,不是就通过querySelector查找当前DOM节点
+          2.如果找到DOM节点
+            1)将这个DOM节点中所有的直系子节点移入文档碎片中(后代节点会因为直系子节点移动而移动)
+              注意:为什么不直接在document中解析,而是移动到文档碎片中
+              回答:当节点移动到文档碎片中,节点会从document中消失
+                  在文档碎片中,对DOM节点进行任意次数的修改,都不会影响到页面渲染
+            2)借调数组的slice方法,通过childNodes生成全新的数组(内部进行浅拷贝),并遍历当前所有的直系子节点
+              -检测当前节点是否是元素节点
+                1.获取当前节点中所有的标签属性节点,并遍历当前标签属性节点
+                2.判断当前标签属性节点是否是指令,例如class就不是,v-on:click就是
+                  -判断当前标签属性节点是否是事件指令,调用事件指令的专属函数,并准备好所需参数
+                    如果所有要素都具备,给当前节点绑定原生DOM事件
+                4.删除所有指令
+              -检测当前节点是否是文本节点,同时内部是否具有插值语法
+                触发bind方法,通过形参dir的值,找到对应的更新器函数
+                将节点和需要显示的data数据,传给更新器函数,并更新textContent
+      */
+
+      // debugger
+      // var vm=new MVVM({
+      //   el: "#app",
+      //   data: {
+      //     msg: "hello MVVM",
+      //     person: {
+      //       name: "jack",
+      //     }
+      //   }
+      // });
       // var obj ={
       //   msg:"hello obj"
       // }
       // debugger
       // vm.msg="hello world"
+      //   var oldTime = Date.now();
+      //   var b=2;
+      // for(var i=0;i<100000;i++){
+      //     // b=b**10;
+      //     console.log(i)
+      // }
+      //   var newTime = Date.now();
+      //   console.log(newTime-oldTime)
     </script>
   </body>
 </html>

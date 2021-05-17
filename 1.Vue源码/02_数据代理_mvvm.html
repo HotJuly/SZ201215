@@ -28,6 +28,7 @@
             都通过Object.defineProperty在vm对象身上生成代理属性
             代理属性具有getter和setter方法,从而修改或者读取源数据
             注意:如果用户需要读取this.msg属性的结果,他会找this._data.msg获取
+            注意:数据代理只会代理直系属性
 
           总结:代理其实可有可无,目的只是为了方便读取
       */
