@@ -12,6 +12,8 @@ function Compile(el, vm) {
 
     //编译文档碎片中所有的节点内容
     //1.解析插值语法
+    //2.解析事件指令
+    //3.解析一般指令
     this.init();
 
     // 将模版解析结束的文档碎片,插入到页模版节点中
@@ -88,8 +90,6 @@ Compile.prototype = {
 
         //将指令前两位切除,就是v-去除
         var dir = attrName.substring(2);
-
-        //判断当前指令是不是事件指令
         if (me.isEventDirective(dir)) {
           //调用事件指令的专属函数,并准备好所需参数
           // 事件绑定需要三要素:事件源(node),事件名(dir),事件回调(me.$vm + exp)

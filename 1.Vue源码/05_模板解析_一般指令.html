@@ -11,8 +11,8 @@
   </head>
   <body>
     <div id="app">
-      <p v-text="msg"></p>
-      <p v-html="msg"></p>
+      <p v-text="msg">{{className}}</p>
+      <!-- <p v-html="msg"></p> -->
       <p v-class="className" class="green">hello mvvm</p>
     </div>
     <script src="./js/observer.js"></script>

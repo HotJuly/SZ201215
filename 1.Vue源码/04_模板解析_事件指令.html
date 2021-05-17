@@ -13,32 +13,32 @@
     <script src="./js/compile.js"></script>
     <script src="./js/mvvm.js"></script>
     <script>
-      // debugger
-      // new MVVM({
-      //   el: "#app",
-      //   data: {},
-      //   methods: {
-      //     handleClick(e) {
-      //       console.log(e);
-      //       this.msg++;
-      //     },
-      //   },
-      // });
+      debugger
+      new MVVM({
+        el: "#app",
+        data: {},
+        methods: {
+          handleClick(e) {
+            console.log(e);
+            this.msg++;
+          },
+        },
+      });
 
-      var obj = {
-        name:"laowang"
-      }
-      function A(){
-        console.log(this);
-      }
-      A();
-      A.call(obj)
-      A();
-      var B = A.bind(obj);
-      B();
-      B();
-      B();
-      B();
+      // var obj = {
+      //   name:"laowang"
+      // }
+      // function A(){
+      //   console.log(this);
+      // }
+      // A();
+      // A.call(obj)
+      // A();
+      // var B = A.bind(obj);
+      // B();
+      // B();
+      // B();
+      // B();
     </script>
   </body>
 </html>

@@ -9,6 +9,7 @@
       <p>{{person.name}}</p>
       <p v-html="msg"></p>
       <p>{{msg}}</p>
+      <p>{{person.age}}</p>
       <button v-on:click="handleClick">按钮</button>
     </div>
     <script src="./js/observer.js"></script>
@@ -16,7 +17,19 @@
     <script src="./js/compile.js"></script>
     <script src="./js/mvvm.js"></script>
     <script>
-      new MVVM({
+      /*
+
+        数据劫持执行时机:
+          1.组件初始化的时候
+          2.当用户修改响应式属性的时候
+
+        总结:
+          1.如果更新的数据与原先数据相同,视图不会更新
+          2.数据劫持是深度劫持,所有的属性都会被劫持
+          3.数据劫持只能监视修改已有响应式属性,删除或者新增属性都不是响应式
+      
+      */
+      let vm  = new MVVM({
         el: "#app",
         data: {
           msg: "hello mvvm",
@@ -26,10 +39,20 @@
         },
         methods: {
           handleClick() {
+            console.log('handleClick')
             this.msg += "~~~~";
+            console.log(this.msg,this._data.msg)
           },
         },
       });
+      delete vm.person.name
+      console.log(vm.person)
+      // vm.person.age="777";
+      // debugger
+      // vm.person = {
+      //   age:777
+      // };
+
 
 
     </script>

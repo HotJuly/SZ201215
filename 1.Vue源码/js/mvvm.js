@@ -11,7 +11,10 @@ function MVVM(options) {
 
   this._initComputed();
 
+  //02.数据劫持
   observe(data, this);
+
+  //03.模版解析
   this.$compile = new Compile(options.el || document.body, this);
 }
 
