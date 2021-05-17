@@ -13,18 +13,42 @@
     <script src="./js/compile.js"></script>
     <script src="./js/mvvm.js"></script>
     <script>
-      debugger
 
-      const vm = new MVVM({
+      /* 1.数据代理
+        实现效果:可以直接通过组件实例对象读取data中的数据
+        例如:this.msg => this._data.msg;
+        目的:方便,简化平常操作
+
+        回顾:
+          1.保存传入MVVM的配置对象 -=> vm.$options
+          2.将配置对象中的data数据保存在三个位置(地址值保存)
+          3.通过me变量缓存当前vm实例对象(this)
+          4.通过Object.keys获取到当前data对象上所有的属性名,并生成数组返回
+          5.遍历当前keys数组,将每个data中的属性,
+            都通过Object.defineProperty在vm对象身上生成代理属性
+            代理属性具有getter和setter方法,从而修改或者读取源数据
+            注意:如果用户需要读取this.msg属性的结果,他会找this._data.msg获取
+
+          总结:代理其实可有可无,目的只是为了方便读取
+      */
+
+
+      // debugger
+      let obj = {
         el: "#app",
         data: {
           msg: "hello MVVM",
         },
-      });
+        // methods:{
+        //   handleClick(){
+        //     console.log(this.msg)
+        //   }
+        // }
+      };
+      const vm = new MVVM(obj);
 
-      console.log(vm.msg);
-
-      console.log(vm._data.msg);
+      // console.log("vm",vm.msg);
+      // console.log('_data',vm._data.msg);
     </script>
   </body>
 </html>

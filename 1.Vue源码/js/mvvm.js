@@ -3,6 +3,8 @@ function MVVM(options) {
   var data = this._data = this.$options.data;
   var me = this;
 
+
+  // 01.数据代理
   Object.keys(data).forEach(function (key) {
     me._proxyData(key);
   });
