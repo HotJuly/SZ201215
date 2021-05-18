@@ -165,6 +165,7 @@ var compileUtil = {
     //如果具有对应的更新器,就调用这个更新器(传入两个参数,需要修改的节点对象,即将更新的文本内容(data中的数据))
     updaterFn && updaterFn(node, this._getVMVal(vm, exp));
 
+    //只要通过插值语法或者指令去获取data中属性的值,一次就会生成一个watcher实例
     new Watcher(vm, exp, function (value, oldValue) {
       updaterFn && updaterFn(node, value, oldValue);
     });
@@ -211,7 +212,9 @@ var compileUtil = {
 
 var updater = {
   textUpdater: function (node, value) {
+    debugger
     node.textContent = typeof value == "undefined" ? "" : value;
+    debugger
   },
 
   htmlUpdater: function (node, value) {

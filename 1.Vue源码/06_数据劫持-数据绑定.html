@@ -10,6 +10,7 @@
       <p v-html="msg"></p>
       <p>{{msg}}</p>
       <p>{{person.age}}</p>
+      <p>{{person}}</p>
       <button v-on:click="handleClick">按钮</button>
     </div>
     <script src="./js/observer.js"></script>
@@ -20,13 +21,24 @@
       /*
 
         数据劫持执行时机:
-          1.组件初始化的时候
+          1.组件初始化的时候(生命周期中的初始化)
           2.当用户修改响应式属性的时候
 
         总结:
           1.如果更新的数据与原先数据相同,视图不会更新
           2.数据劫持是深度劫持,所有的属性都会被劫持
           3.数据劫持只能监视修改已有响应式属性,删除或者新增属性都不是响应式
+            解决方案:
+              1.新增 Vue.set -> vm.$set
+              2.删除 Vue.delete -> vm.$delete
+          
+        注意:
+          1.数组从技术来说,是可以被数据劫持的,但是Vue没有这么做
+            数组下标没有被劫持,但是内部如果是对象,对象的所有属性还是会被深度劫持
+            原因:因为Vue官方认为一般放在数组中的数据,都是大体量数据,一般都用于展示
+          2.Vue中,数组的多个操作数组内容的方法都被重写了
+            pop,push,splice,unshift,shift....
+            内部:原先功能还有保留,同时内部肯定有通知视图更新功能
       
       */
       let vm  = new MVVM({
@@ -35,7 +47,7 @@
           msg: "hello mvvm",
           person: {
             name: "jack",
-          },
+          }
         },
         methods: {
           handleClick() {
@@ -45,13 +57,37 @@
           },
         },
       });
-      delete vm.person.name
-      console.log(vm.person)
+      // delete vm.person.name
+      // vm.person=666
+      // console.log(vm.person)
       // vm.person.age="777";
       // debugger
       // vm.person = {
       //   age:777
       // };
+      // vm.person={}
+      // debugger
+      // vm.person.name=999;
+      // console.log(vm.person)
+      // vm.person={
+      //   name:999
+      // }
+      // debugger
+      // vm.person.name=777;
+
+      // arr[1]={
+      //   name:666
+      // };
+
+      // var arr = {
+      //   "0":{
+      //     name:1
+      //   },
+      //   "1":{
+      //     name:2
+      //   },
+      //   length:2
+      // }
 
 
 

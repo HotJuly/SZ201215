@@ -6,7 +6,7 @@
   </head>
   <body>
     <div id="app">
-      <div>{{msg}}</div>
+      <div>{{msg + person.name}}</div>
       <div>{{person.name}}
         <p>123</p>
       </div>
@@ -36,8 +36,10 @@
                     将节点和需要使用的data数据,传给更新器函数,并更新className
                 3.删除所有指令
               -检测当前节点是否是文本节点,同时内部是否具有插值语法
-                触发bind方法,通过形参dir的值,找到对应的更新器函数
-                将节点和需要显示的data数据,传给更新器函数,并更新textContent
+                触发bind方法,通过形参dir的值,找到对应的更新器函数(textUpdater)
+                将节点和需要显示的data数据,传给更新器函数,并更新textContent(innerText)
+              -检测当前节点是否还具有子节点
+                如果有子节点回到2)(无限递归,直到最深层次)
       */
 
       // debugger

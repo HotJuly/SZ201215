@@ -16,6 +16,7 @@ Observer.prototype = {
     },
 
     defineReactive: function(data, key, val) {
+        //data中每有一个属性,就会生成一个dep对象
         var dep = new Dep();
         var childObj = observe(val);
 
@@ -37,6 +38,27 @@ Observer.prototype = {
                 dep.notify();
             }
         });
+
+        // Object.defineProperty(vm._data, "msg", {
+        //     enumerable: true,
+        //     configurable: false,
+        //     get: function() {
+        //         if (Dep.target) {
+        //             dep.depend();
+        //         }
+        //         return val;
+        //     },
+        //     set: function(newVal) {
+            // newVal=>hello mvvm~~~~
+            // val=>hello mvvm
+        //         if (newVal === val) {
+        //             return;
+        //         }
+        //         val = newVal;
+        //         childObj = observe(newVal);
+        //         dep.notify();
+        //     }
+        // });
     }
 };
 
@@ -58,10 +80,12 @@ function Dep() {
 
 Dep.prototype = {
     addSub: function(sub) {
+        // sub->watcher实例
         this.subs.push(sub);
     },
 
     depend: function() {
+        // watcher.addDep(dep);
         Dep.target.addDep(this);
     },
 
@@ -74,6 +98,7 @@ Dep.prototype = {
 
     notify: function() {
         this.subs.forEach(function(sub) {
+            // sub=>watcher
             sub.update();
         });
     }
