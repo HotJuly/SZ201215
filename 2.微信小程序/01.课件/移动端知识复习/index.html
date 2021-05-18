@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- initial-scale= 视觉视口宽度/布局视口宽度 -->
+    <meta name="viewport" content="width=device-width,initial-scale=2">
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+        }
+        img{
+            /* width:187px;
+            height:187px; */
+            /* width:50%;
+            height:50%; */
+            /* 100vw=屏幕100%宽度 100vh=屏幕100%高度 */
+            /* width:50vw; */
+            width:5rem;
+        }
+        html,body{
+            width:100%;
+        }
+    </style>
+</head>
+<body>
+    <img src="./1.jpg" alt="">
+    <script>
+        // 需求:让图片占屏幕50%
+        //1.需要知道视觉视口宽度
+        //     解:可以实现理想视口,然后读取html宽度,即可知道
+        //      问题:想要知道屏幕宽度,同时具有一个单位,可以所有元素共用
+        //思路:
+        // 1.获取到布局视口宽度,并作为根节点字体大小使用
+        var width = document.documentElement.clientWidth/10;
+        document.documentElement.style.fontSize=width+"px";
+    </script>
+</body>
+</html>
