@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function sum(year){
+            if(year===0){
+                //如果是第0年,牛的初始情况数组
+                return [1,0,0,0,0,0];
+            }else{
+                //上一年的牛情况的数组
+                const oldSum=sum(year-1);
+
+                //获取上一年0岁到4岁的牛组成的数组
+                const newSum=oldSum.slice(0,-1);
+
+                //根据去年为2岁和4岁的牛的数量,计算出今年0岁的小牛数量,并插入到数组头部
+                newSum.unshift(newSum[2]+newSum[4]);
+                return newSum;
+            }
+        }
+        //n是年份
+        let n=prompt('输入年份')*1;
+
+        //获得第n年小牛情况的数组
+        const totalArr=sum(n);
+        console.log(totalArr)
+
+        //统计存活小牛的数量
+        const total=totalArr.reduce((pre,item)=>{
+            return pre+item;
+        })
+        console.log(`第${n}年共有牛${total}只`);
+    </script>
+</body>
+</html>
