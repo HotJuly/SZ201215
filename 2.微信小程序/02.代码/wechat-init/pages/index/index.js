@@ -17,17 +17,43 @@ Page({
     Person()
 
     面试题:如何实现深拷贝
-    
+      乞丐版:JSON.parse(JSON.stringify(data))
    */
   data: {
     msg:"女神"
+  },
+
+  handleClick(){
+    console.log('handleClick')
+  },
+
+  handleParent(){
+    console.log('handleParent')
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    // this.setData({
+    //   msg:"华华"
+    // })
+    // console.log(this.data.msg)
 
+    // this.setData({
+    //   msg: "华华1"
+    // })
+    // console.log(this.data.msg)
+
+    // this.setData({
+    //   msg: "华华2"
+    // })
+    // console.log(this.data.msg)
+
+    // this.setData({
+    //   msg: "华华3"
+    // })
+    // console.log(this.data.msg)
   },
 
   /**

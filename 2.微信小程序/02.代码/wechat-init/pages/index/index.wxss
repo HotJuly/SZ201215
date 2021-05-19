@@ -1,7 +1,4 @@
 /* pages/index/index.wxss */
-page{
-  height:100%;
-}
 .container{
   display:flex;
   height:100%;
@@ -12,7 +9,7 @@ page{
 }
 
 .nvsheng{
-  width:200px;
-  height:200px;
+  width:375rpx;
+  height:375rpx;
   border-radius: 50%;
 }
