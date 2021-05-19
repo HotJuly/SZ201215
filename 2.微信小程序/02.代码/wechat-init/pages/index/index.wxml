@@ -1,0 +1,5 @@
+<view class="container">
+  <image class="nvsheng" src="/static/images/nvsheng.jpg"></image>
+  <text class="username">你好,{{msg}}</text>
+  <button class="go">欢迎来到尚硅谷</button>
+</view>
