@@ -1,8 +1,12 @@
 <view class="container">
-  <button
+  <!-- <button
    open-type="getUserInfo"
    bindgetuserinfo="getUserInfo"
+  >获取用户信息</button> -->
+  <button
+   bindtap="getUserProfile"
   >获取用户信息</button>
+  <open-data type="userAvatarUrl"></open-data>
   <image class="nvsheng" src="{{userInfo.avatarUrl}}"></image>
   <text class="username" bindtap="changeMsg">你好,{{userInfo.nickName}}</text>
   <view bindtap="handleParent">

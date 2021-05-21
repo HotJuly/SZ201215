@@ -23,7 +23,7 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.14.4",
+	"libVersion": "2.15.0",
 	"appid": "wxe5931a68ea66cece",
 	"projectname": "wechat-init",
 	"debugOptions": {

@@ -24,6 +24,21 @@ Page({
     userInfo:{}
   },
 
+  getUserProfile(){
+    wx.getUserProfile({
+      desc: "测试",
+      success:(detail)=> {
+        // console.log('success', res)
+        this.setData({
+          userInfo:detail.userInfo
+        })
+      },
+      fail(){
+        console.log('fail')
+      }
+    })
+  },
+
   getUserInfo(res){
     // 接受数据的两个位置:1.参数 2.this
     console.log('getUserInfo', res)
@@ -80,6 +95,18 @@ Page({
     //   msg: "华华3"
     // })
     // console.log(this.data.msg)
+
+    // 用户二次登录免授权功能
+    // wx.getUserInfo({
+    //   success:(detail)=>{
+    //     // console.log(res)
+    //     this.setData({
+    //       userInfo:detail.userInfo
+    //     })
+    //   }
+    // })
+
+    console.log(wx.canIUse('getUserProfile'))
   },
 
   /**
