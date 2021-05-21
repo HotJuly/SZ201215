@@ -20,15 +20,41 @@ Page({
       乞丐版:JSON.parse(JSON.stringify(data))
    */
   data: {
-    msg:"女神"
+    msg:"女神",
+    userInfo:{}
+  },
+
+  getUserInfo(res){
+    // 接受数据的两个位置:1.参数 2.this
+    console.log('getUserInfo', res)
+    // 判断用户是否授权成功
+    if (res.detail.rawData){
+      const { userInfo } = res.detail;
+      this.setData({
+        userInfo
+      })
+    }
+  },
+
+  changeMsg(){
+    this.setData({
+      msg:"我是修改之后的数据"
+    })
   },
 
   handleClick(){
     console.log('handleClick')
+    wx.navigateTo({
+      url: "/pages/log/log"
+    })
+
+    // wx.redirectTo({
+    //   url: "/pages/log/log"
+    // })
   },
 
   handleParent(){
-    console.log('handleParent')
+    // console.log('handleParent')
   },
 
   /**
