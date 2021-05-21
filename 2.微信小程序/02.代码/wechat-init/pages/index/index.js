@@ -1,4 +1,5 @@
 // pages/index/index.js
+const citySelector = requirePlugin('citySelector');
 Page({
 
   /**
@@ -21,7 +22,8 @@ Page({
    */
   data: {
     msg:"女神",
-    userInfo:{}
+    userInfo:{},
+    city:"欢迎来到尚硅谷"
   },
 
   getUserProfile(){
@@ -58,14 +60,22 @@ Page({
   },
 
   handleClick(){
-    console.log('handleClick')
-    wx.navigateTo({
-      url: "/pages/log/log"
-    })
+    // console.log('handleClick')
+    // wx.navigateTo({
+    //   url: "/pages/log/log"
+    // })
 
     // wx.redirectTo({
     //   url: "/pages/log/log"
     // })
+
+    const key = 'BZ7BZ-QQWCU-DHWV2-BFJJG-B2JZF-KSBT3'; // 使用在腾讯位置服务申请的key
+    const referer = '七月入栈'; // 调用插件的app的名称
+    const hotCitys = '上海,北京,深圳,泉州'; // 用户自定义的的热门城市
+
+    wx.navigateTo({
+      url: `plugin://citySelector/index?key=${key}&referer=${referer}&hotCitys=${hotCitys}`,
+    })
   },
 
   handleParent(){
@@ -120,7 +130,13 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    const selectedCity = citySelector.getCity();
+    if (selectedCity){
+      this.setData({
+        city: selectedCity.name
+      })
+    }
+    console.log('selectedCity', selectedCity)
   },
 
   /**

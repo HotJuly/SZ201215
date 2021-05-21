@@ -10,7 +10,7 @@
   <image class="nvsheng" src="{{userInfo.avatarUrl}}"></image>
   <text class="username" bindtap="changeMsg">你好,{{userInfo.nickName}}</text>
   <view bindtap="handleParent">
-    <button class="go" bindtap="handleClick">欢迎来到尚硅谷</button>
+    <button class="go" bindtap="handleClick">{{city}}</button>
   </view>
   <!-- <text>
   <view>huahua</view>
