@@ -68,8 +68,9 @@ Page({
     // wx.redirectTo({
     //   url: "/pages/log/log"
     // })
-
     const key = 'BZ7BZ-QQWCU-DHWV2-BFJJG-B2JZF-KSBT3'; // 使用在腾讯位置服务申请的key
+
+    // const key = 'BZ7BZ-QQWCU-DHWV2-BFJJG-B2JZF-KSBT3'; // 使用在腾讯位置服务申请的key
     const referer = '七月入栈'; // 调用插件的app的名称
     const hotCitys = '上海,北京,深圳,泉州'; // 用户自定义的的热门城市
 

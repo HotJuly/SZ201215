@@ -9,23 +9,15 @@
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
-		"coverView": true,
 		"autoAudits": false,
+		"coverView": true,
 		"showShadowRootInWxmlPanel": true,
-		"scopeDataCheck": false,
-		"checkInvalidKey": true,
-		"checkSiteMap": true,
-		"uploadWithSourceMap": true,
-		"babelSetting": {
-			"ignore": [],
-			"disablePlugins": [],
-			"outputPath": ""
-		}
+		"scopeDataCheck": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.17.0",
+	"libVersion": "2.14.4",
 	"appid": "wxe5931a68ea66cece",
-	"projectname": "wechat-init",
+	"projectname": "%E7%A1%85%E8%B0%B7%E4%BA%91%E9%9F%B3%E4%B9%90",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},

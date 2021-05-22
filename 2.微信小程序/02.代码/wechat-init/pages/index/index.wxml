@@ -3,11 +3,16 @@
    open-type="getUserInfo"
    bindgetuserinfo="getUserInfo"
   >获取用户信息</button> -->
+  <!-- <open-data type="userAvatarUrl"></open-data> -->
   <button
+  wx:if="{{!userInfo.avatarUrl}}"
+   class="nvsheng"
    bindtap="getUserProfile"
   >获取用户信息</button>
-  <open-data type="userAvatarUrl"></open-data>
-  <image class="nvsheng" src="{{userInfo.avatarUrl}}"></image>
+  <image
+    wx:else
+   class="nvsheng"
+    src="{{userInfo.avatarUrl}}"></image>
   <text class="username" bindtap="changeMsg">你好,{{userInfo.nickName}}</text>
   <view bindtap="handleParent">
     <button class="go" bindtap="handleClick">{{city}}</button>
