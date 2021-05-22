@@ -12,7 +12,28 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    // console.log('window', window)
+    // console.log('wx', wx)
+    /*
+      发送请求三要素
+      1.在哪发
+        onLoad
+      2.怎么发
+        wx.request(),该API可以发送请求
+      3.往哪发
+        去接口文档查看接口
+     */
+    console.log(1)
+    wx.request({
+      url:"http://localhost:3000/banner",
+      data:{
+        type:2
+      },
+      success(res){
+        console.log('res', res)
+      }
+    })
+    console.log(2)
   },
 
   /**
