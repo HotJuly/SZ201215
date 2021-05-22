@@ -41,13 +41,10 @@
 
   <!-- 推荐歌曲区域 -->
   <view class="recommendContainer">
-    <view class="header">
-      <text class="title">推荐歌曲</text>
-      <view class="moreTitle">
-        <text class="moreContent">为你精心推荐</text>
-        <view class="more">查看更多</view>
-      </view>
-    </view>
+
+  <!-- 推荐区域头部 -->
+
+  <NavHeader title="推荐歌曲" moreContent="为你精心推荐"/>
 
     <scroll-view 
     class="recommendScroll"
