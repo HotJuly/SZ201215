@@ -27,3 +27,78 @@
 .indexContainer .nav .navItem text{
   font-size:28rpx;
 }
+
+/* 推荐歌曲区域开始 */
+
+.header .title{
+  font-size:28rpx;
+}
+
+.header .moreTitle{
+  /* 清除浮动 
+    1.给当前元素添加伪元素,并设置clear:both;
+    2.给当前元素添加高度
+    3.开启BFC
+      1)overflow的值不为默认值
+      2)position:fixed|absolute
+      3)display:inline-block|table|table-cell
+      4)float:left|right
+  */
+  overflow:hidden;
+}
+
+.header .moreTitle .moreContent{
+  float:left;
+  font-size:30rpx;
+}
+
+.header .moreTitle .more{
+  float:right;
+  font-size:22rpx;
+  border:1rpx solid;
+  border-radius: 10rpx;
+  padding:10rpx 20rpx;
+}
+
+.indexContainer .recommendContainer{
+  padding:0 20rpx;
+}
+
+.indexContainer .recommendContainer .recommendScroll{
+  display:flex;
+}
+
+.indexContainer .recommendContainer .recommendScroll .recommendItem{
+  display:flex;
+  flex-direction: column;
+  margin-right:20rpx;
+  width:200rpx;
+}
+
+.indexContainer .recommendContainer .recommendScroll .recommendItem .recommendImg{
+  width:200rpx;
+  height:200rpx;
+  border-radius: 20rpx;
+}
+
+.indexContainer .recommendContainer .recommendScroll .recommendItem text{
+  /* 单行文本溢出隐藏,显示省略号 */
+  /* white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis; */
+
+  /* 多行文本溢出隐藏,显示省略号 */
+  height:80rpx;
+  overflow: hidden;
+
+  /* 1.开启webkit内核的box盒模型 */
+  display:-webkit-box;
+
+  /* 2.声明当前溢出隐藏的行数 */
+  -webkit-line-clamp:2;
+
+  /* 3.声明当前文本排列方向 */
+  -webkit-box-orient:vertical;
+}
+
+/* 推荐歌曲区域结束 */
