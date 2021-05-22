@@ -1,17 +1,20 @@
 // pages/index/index.js
+// 引入js文件不能使用绝对路径
+import req from '../../utils/req.js';
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    banners:[],
+    recommendList:[]
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad:async function (options) {
     // console.log('window', window)
     // console.log('wx', wx)
     /*
@@ -23,17 +26,52 @@ Page({
       3.往哪发
         去接口文档查看接口
      */
-    console.log(1)
-    wx.request({
-      url:"http://localhost:3000/banner",
-      data:{
-        type:2
-      },
-      success(res){
-        console.log('res', res)
-      }
+    // console.log(1)
+
+    //用于请求轮播图数据
+    // wx.request({
+    //   url:"http://localhost:3000/banner",
+    //   data:{
+    //     type:2
+    //   },
+    //   success:(res)=>{
+    //     // console.log('res', res)
+    //     const banners = res.data.banners;
+    //     this.setData({
+    //       banners
+    //     })
+    //   }
+    // })
+
+    let result = req('http://localhost:3000/banner',{type:2});
+    result.then((res) => {
+      // console.log('result', res);
+      const banners = res.data.banners;
+      this.setData({
+        banners
+      })
     })
-    console.log(2)
+    // console.log(2)
+
+    //用于请求推荐歌曲区域数据
+    // wx.request({
+    //   url: "http://localhost:3000/personalized",
+    //   success: (res) => {
+    //     // console.log('res', res)
+    //     const recommendList = res.data.result;
+    //     this.setData({
+    //       recommendList
+    //     })
+    //   }
+    // })
+
+    let result1 = req('http://localhost:3000/personalized');
+    result1.then((res) => {
+      const recommendList = res.data.result;
+      this.setData({
+        recommendList
+      })
+    })
   },
 
   /**
