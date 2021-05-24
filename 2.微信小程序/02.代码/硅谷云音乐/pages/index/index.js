@@ -8,7 +8,8 @@ Page({
    */
   data: {
     banners:[],
-    recommendList:[]
+    recommendList:[],
+    topList:[]
   },
 
   /**
@@ -72,6 +73,43 @@ Page({
         recommendList
       })
     })
+
+    // 请求排行榜数据
+    // 用于存放多个榜单的数据
+    const topList = [];
+
+    // 用于存放当前需要展示的榜单key值
+    const arr = [2,6,8,12];
+
+    let index = 0;
+
+    while (arr.length>index) {
+      let topData = req('http://localhost:3000/top/list', { idx: arr[index++] });
+      topData.then((res) => {
+        /*
+          id 当前榜单的唯一标识
+          name 当前榜单名称
+          tracks 当前榜单的歌曲排名列表
+         */
+        let { id, name, tracks } = res.data.playlist;
+
+        //由于tracks数组内部存放着100首歌,实际只需要3首,所以需要进行数据处理
+        tracks = tracks.slice(0,3);
+
+        topList.push({
+          id,
+          name,
+          tracks
+        })
+
+        this.setData({
+          topList
+        })
+        // console.log(topList);
+      })
+    }
+    
+  
   },
 
   /**

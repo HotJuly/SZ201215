@@ -38,6 +38,7 @@
 
 .indexContainer .recommendContainer .recommendScroll{
   display:flex;
+  height:300rpx;
 }
 
 .indexContainer .recommendContainer .recommendScroll .recommendItem{
@@ -74,3 +75,48 @@
 }
 
 /* 推荐歌曲区域结束 */
+
+/* 排行榜区域开始 */
+.topContainer .topSwiper{
+  height:420rpx;
+}
+
+.topContainer .topSwiper .topItem{
+  width:97%;
+  background:pink;
+}
+
+.topContainer .topSwiper .topItem .song  .topImg{
+  width: 100rpx;
+  height: 100rpx;
+  flex-shrink: 0;
+}
+
+.topContainer .topSwiper .topItem .song{
+  display:flex;
+  align-items: center;
+  padding:10rpx 0;
+}
+
+.topContainer .topSwiper .topItem .song .topIndex{
+  /* 
+    将一个非block元素变成block的方法:
+      1.display:block;
+      2.给父级添加flex
+      3.float
+      4.position
+   */
+  width:100rpx;
+  height:100rpx;
+  text-align: center;
+  line-height:100rpx;
+  flex-shrink: 0;
+}
+
+.topContainer .topSwiper .topItem .song .songName{
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
+}
+
+/* 排行榜区域结束 */

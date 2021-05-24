@@ -42,9 +42,9 @@
   <!-- 推荐歌曲区域 -->
   <view class="recommendContainer">
 
-  <!-- 推荐区域头部 -->
+    <!-- 推荐区域头部 -->
 
-  <NavHeader title="推荐歌曲" moreContent="为你精心推荐"/>
+    <NavHeader title="推荐歌曲" moreContent="为你精心推荐"/>
 
     <scroll-view 
     class="recommendScroll"
@@ -64,5 +64,27 @@
         <text>{{item.name}}</text>
       </view>
     </scroll-view>
+  </view>
+
+  <!-- 排行榜区域 -->
+  <view class="topContainer">
+    <NavHeader title="排行榜" moreContent="热歌风向标"/>
+    <swiper class="topSwiper" next-margin="50">
+      <swiper-item wx:for="{{topList}}" wx:key="id">
+        <view class="topItem">
+          <view class="topName">{{item.name}}</view>
+          <view class="song" 
+          wx:for="{{item.tracks}}"
+          wx:for-item="song"
+          wx:for-index="songIndex"
+          wx:key="id"
+          >
+            <image class="topImg" src="{{song.al.picUrl}}"></image>
+            <text class="topIndex">{{songIndex + 1}}</text>
+            <text class="songName">{{song.name}}</text>
+          </view>
+        </view>
+      </swiper-item>
+    </swiper>
   </view>
 </view>
