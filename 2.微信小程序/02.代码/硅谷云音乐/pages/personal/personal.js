@@ -5,7 +5,35 @@ Page({
    * 页面的初始数据
    */
   data: {
+    moveDistance:0,
+    moveTransition:null
+  },
 
+  handleTouchStart(event) {
+    // console.log('handleTouchStart', event.changedTouches[0].clientY)
+    this.startY = event.changedTouches[0].clientY;
+    this.setData({
+      moveTransition:null
+    })
+  },
+
+  handleTouchMove(event){
+    // console.log('handleTouchMove', event.changedTouches[0].clientY)
+    let moveY = event.changedTouches[0].clientY;
+    let moveDistance = moveY - this.startY;
+    if (moveDistance > 0&&moveDistance<80) {
+      this.setData({
+        moveDistance
+      })
+    }
+    // console.log(moveDistance)
+  },
+
+  handleTouchEnd() {
+    this.setData({
+      moveDistance:0,
+      moveTransition: "transform 400ms"
+    })
   },
 
   /**
