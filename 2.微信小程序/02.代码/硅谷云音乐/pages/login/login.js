@@ -82,7 +82,8 @@ Page({
           200 登陆成功
      */
     let result = await req('/login/cellphone',{phone,password});
-    // console.log('result', result)
+    // console.log('result', result);
+    wx.setStorageSync("userInfo", JSON.stringify(result.profile))
     let code = result.code;
 
     //根据请求的状态码,提示用户信息

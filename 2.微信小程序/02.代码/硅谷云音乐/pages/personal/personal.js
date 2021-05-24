@@ -6,7 +6,8 @@ Page({
    */
   data: {
     moveDistance:0,
-    moveTransition:null
+    moveTransition:null,
+    userInfo:{}
   },
 
   handleTouchStart(event) {
@@ -39,11 +40,23 @@ Page({
     })
   },
 
+  toLogin(){
+    wx.navigateTo({
+      url:"/pages/login/login"
+    })
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    // console.log('onLoad')
+    // let userInfoStr = wx.getStorageSync('userInfo') ;
+    // let userInfo = JSON.parse(userInfoStr||"{}");
+    // // console.log('userInfo', userInfo)
+    // this.setData({
+    //   userInfo
+    // })
   },
 
   /**
@@ -57,7 +70,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    let userInfoStr = wx.getStorageSync('userInfo');
+    let userInfo = JSON.parse(userInfoStr || "{}");
+    this.setData({
+      userInfo
+    })
   },
 
   /**
