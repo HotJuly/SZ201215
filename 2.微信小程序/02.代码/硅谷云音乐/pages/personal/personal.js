@@ -11,7 +11,10 @@ Page({
 
   handleTouchStart(event) {
     // console.log('handleTouchStart', event.changedTouches[0].clientY)
+    // event.touches用于收集当前屏幕上所有的手指
+    // event.changedTouches用于收集当前屏幕上正在移动的手指
     this.startY = event.changedTouches[0].clientY;
+    console.log(event)
     this.setData({
       moveTransition:null
     })

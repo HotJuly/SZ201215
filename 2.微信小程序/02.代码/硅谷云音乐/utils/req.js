@@ -14,17 +14,17 @@
       3.谁使用谁传入
 
  */
-
+import config from './config.js';
 
 export default function(url, data={},method="GET"){
   return new Promise((resolve,reject) => {
     wx.request({
-      url: url,
+      url: config.host + url,
       data,
       method,
       success: (res) => {
-        console.log('res', res)
-        resolve(res);
+        // console.log('res', res)
+        resolve(res.data);
         // const banners = res.data.banners;
         // this.setData({
         //   banners
