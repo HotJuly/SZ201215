@@ -21,6 +21,17 @@ Page({
     videoContext.pause();
   },
 
+  // 用于处理用户上拉触底加载更多操作
+  handleScrollToLower(){
+    console.log('handleScrollToLower')
+    setTimeout(()=>{
+      let newList = this.data.videoList.slice(0,8);
+      let arr = [...this.data.videoList,...newList];
+      this.setData({
+        videoList:arr
+      })
+    },2000)
+  },
 
   // 用于处理用户下拉刷新操作
   async handlePullDown(){
@@ -133,6 +144,30 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow:async function () {
+    if(!wx.getStorageSync('cookie')){
+      wx.showModal({
+        title:"请先登录",
+        content:"该功能需要登录帐号",
+        cancelText:"回到首页",
+        confirmText:"去登陆",
+        success({cancel}){
+          // console.log('success', info)
+          if (cancel) {
+            wx.switchTab({
+              url: '/pages/index/index'
+            })
+          } else {
+            wx.navigateTo({
+              url: '/pages/login/login'
+            })
+          }
+        },
+        fail() {
+          console.log('fail')
+        }
+      })
+      return;
+    }
     //用于获取导航栏信息
     let navData = await req('/video/group/list');
     // console.log('navData',navData)
@@ -179,7 +214,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    console.log('onReachBottom')
   },
 
   /**

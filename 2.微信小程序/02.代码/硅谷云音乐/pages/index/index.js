@@ -44,10 +44,10 @@ Page({
     //   }
     // })
 
-    let result = req('http://localhost:3000/banner',{type:2});
+    let result = req('/banner',{type:2});
     result.then((res) => {
       // console.log('result', res);
-      const banners = res.data.banners;
+      const banners = res.banners;
       this.setData({
         banners
       })
@@ -66,9 +66,9 @@ Page({
     //   }
     // })
 
-    let result1 = req('http://localhost:3000/personalized');
+    let result1 = req('/personalized');
     result1.then((res) => {
-      const recommendList = res.data.result;
+      const recommendList = res.result;
       this.setData({
         recommendList
       })
@@ -84,14 +84,14 @@ Page({
     let index = 0;
 
     while (arr.length>index) {
-      let topData = req('http://localhost:3000/top/list', { idx: arr[index++] });
+      let topData = req('/top/list', { idx: arr[index++] });
       topData.then((res) => {
         /*
           id 当前榜单的唯一标识
           name 当前榜单名称
           tracks 当前榜单的歌曲排名列表
          */
-        let { id, name, tracks } = res.data.playlist;
+        let { id, name, tracks } = res.playlist;
 
         //由于tracks数组内部存放着100首歌,实际只需要3首,所以需要进行数据处理
         tracks = tracks.slice(0,3);
