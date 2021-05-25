@@ -1,10 +1,31 @@
 // pages/video/video.js
+import req from '../../utils/req.js';
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    navList:[],
+    videoList:[],
+    currentId:null
+  },
+
+  changeId(event){
+    // console.log('changeId',event.currentTarget)
+    let { id } = event.currentTarget.dataset;
+    /*
+      自定义属性:你给他什么,他就返回什么,数据类型不变
+      标签属性:你给他什么,他会转为字符串返回
+     */
+
+
+    // let { id } = event.currentTarget;
+    // console.log(id)
+    this.setData({
+      currentId:id
+    })
+
 
   },
 
@@ -25,8 +46,25 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow:async function () {
+    //用于获取导航栏信息
+    let navData = await req('/video/group/list');
+    // console.log('navData',navData)
+    this.setData({
+      navList:navData.data.slice(0,14),
+      currentId: navData.data[0].id
+    })
 
+    //用于获取视频列表信息
+    let videoData = await req('/video/group',{id:58100});
+    // console.log('videoData', videoData)
+    let videoList = videoData.datas.map((item,index)=>{
+      return item.data
+    })
+    // console.log(videoList)
+    this.setData({
+      videoList
+    })
   },
 
   /**

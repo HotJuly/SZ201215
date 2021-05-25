@@ -81,7 +81,7 @@ Page({
           502 密码错误
           200 登陆成功
      */
-    let result = await req('/login/cellphone',{phone,password});
+    let result = await req('/login/cellphone',{phone,password,isLogin:true});
     // console.log('result', result);
     wx.setStorageSync("userInfo", JSON.stringify(result.profile))
     let code = result.code;

@@ -22,8 +22,32 @@ export default function(url, data={},method="GET"){
       url: config.host + url,
       data,
       method,
+      header:{
+        cookie: wx.getStorageSync('cookie')
+      },
       success: (res) => {
         // console.log('res', res)
+        //将cookie保存到Storage中
+        /*判断依据:
+            1.通过cookie长度判断(当前可行,但是不稳妥)
+            2.通过请求路径url进行判断(较为可行,但是需要放置后端修改接口地址)
+            3.通过data中新增一个isLogin属性来进行判断
+        */
+        if(data.isLogin){
+          let { cookies } = res;
+
+          //找到MUSIC_U开头的cookie
+          let cookie = cookies.find((item,index)=>{
+            return item.startsWith('MUSIC_U');
+          })
+
+          //将找到的cookie保存到Storage
+          wx.setStorage({
+            key:"cookie",
+            data: cookie
+          })
+        }
+
         resolve(res.data);
         // const banners = res.data.banners;
         // this.setData({
