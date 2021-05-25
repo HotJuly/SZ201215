@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            async注意点:
+                1.async函数返回值一定是一个promise对象
+                2.返回的promise状态默认是pending
+                3.如果async函数内部所有代码都执行结束,返回的promise对象,状态自动变成成功
+                4.如果async函数内部出现错误或者return一个失败的promise,那么之前返回的promise会自动变成失败
+                5.async函数的返回值如果不是promise对象,就会被作为之前返回的promise对象的结果
+        */
+        async function A(){
+            console.log(5)
+
+            let a = await new Promise((resolve,reject)=>{
+                console.log(1)
+                setTimeout(resolve,2000,123);
+                console.log(3)
+            })
+
+            console.log(4)
+            return 666;
+        }
+        let a = A();
+        console.log('a',a)
+    </script>
+</body>
+</html>

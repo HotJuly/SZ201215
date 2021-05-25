@@ -15,6 +15,9 @@
 
  */
 import config from './config.js';
+//优点:只有在项目初始化的时候,读取一次
+// 缺点:时效性太差了,没办法保证是当前最新
+// let cookie = wx.getStorageSync('cookie');
 
 export default function(url, data={},method="GET"){
   return new Promise((resolve,reject) => {
@@ -22,8 +25,11 @@ export default function(url, data={},method="GET"){
       url: config.host + url,
       data,
       method,
-      header:{
+      header: {
+      //优点:时效性较好,每次发送请求都会尝试读取一次
+      // 缺点:读取次数太频繁
         cookie: wx.getStorageSync('cookie')
+        // cookie
       },
       success: (res) => {
         // console.log('res', res)

@@ -1,0 +1,26 @@
+1.下拉刷新功能
+需求:当用户下拉scroll-view的时候,展示最新视频数据
+拆解:
+	1.当用户下拉scroll-view的时候
+		事件名:refresherrefresh
+		问题:绑定当前事件无效
+		原因:因为没有开启下拉动画
+		解决:给scroll-view组件添加标签属性refresher-enabled,开启下拉动画
+
+		问题:数据成功更新,但是下拉动画没有消失
+		解决:给scroll-view添加标签属性refresher-triggered属性,通过data控制他的显示隐藏
+	2.展示最新视频数据
+		1)获取到最新的视频数据
+			发送请求获取服务器最新数据
+		2)在页面上展示最新数据
+			更新data中的videoList
+
+扩展:
+	实现全局页面下拉刷新
+	1)在app.json->配置window->配置enablePullDownRefresh:true可以开启全局页面下拉动画
+	2)在Page的配置对象中,可以监听页面的下拉操作(onPullDownRefresh)
+
+
+
+
+2.上拉加载更多

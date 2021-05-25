@@ -8,7 +8,8 @@
   "window": {
     "navigationBarBackgroundColor": "#d43c33",
     "navigationBarTitleText": "硅谷云音乐",
-    "navigationBarTextStyle": "white"
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh":true
   },
   "tabBar": {
     "color": "#333",
