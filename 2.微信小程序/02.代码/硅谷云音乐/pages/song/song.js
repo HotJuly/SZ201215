@@ -1,5 +1,9 @@
 // pages/song/song.js
 import req from '../../utils/req.js';
+import PubSub from 'pubsub-js';
+console.log('PubSub', PubSub)
+
+let appInstance = getApp();
 Page({
 
   /**
@@ -8,20 +12,42 @@ Page({
   data: {
     songObj:{},
     musicUrl:"",
-    isPlay:false
+    isPlay:false,
+    songId:null
   },
 
   // 用于处理用户点击播放按钮操作
   handlePlay(){
+      /* 
+        判断当前歌曲播放状态
+          如果正在播放,就暂停音频播放
+          如果当前没有播放,就开始播放音频
+      */
+
     // 1.获取到全局唯一的背景音频管理器
-    let backgroundAudioManager = wx.getBackgroundAudioManager()
-    // 2.使用背景音频管理器播放歌曲
-    // 注意:只添加src不够,title也是必填属性,不添加不能播放音乐
-    backgroundAudioManager.src = this.data.musicUrl;
-    backgroundAudioManager.title = this.data.songObj.name;
-    
+    let backgroundAudioManager = wx.getBackgroundAudioManager();
+
+    if(this.data.isPlay){
+      //暂停音频播放
+      backgroundAudioManager.pause();
+
+      // 记录当前歌曲的播放状态
+      appInstance.globalData.playState = false;
+
+    } else {
+      // 2.使用背景音频管理器播放歌曲
+      // 注意:只添加src不够,title也是必填属性,不添加不能播放音乐
+      backgroundAudioManager.src = this.data.musicUrl;
+      backgroundAudioManager.title = this.data.songObj.name;
+
+      // 记录当前播放的歌曲id,用于后续再次进入页面判断播放状态使用
+      appInstance.globalData.audioId = this.data.songId;
+      // 记录当前歌曲的播放状态
+      appInstance.globalData.playState = true;
+    }
+
     this.setData({
-      isPlay:true
+      isPlay:!this.data.isPlay
     })
   },
 
@@ -40,7 +66,8 @@ Page({
     });
     // console.log('songData',songData)
     this.setData({
-      songObj:songData.songs[0]
+      songObj:songData.songs[0],
+      songId
     })
 
     // 通过jsAPI动态修改当前页面标题
@@ -55,6 +82,21 @@ Page({
     this.setData({
       musicUrl:urlData.data[0].url
     })
+
+    // console.log('appInstance', appInstance)
+    // console.log('appInstance1', appInstance.globalData.msg)
+    // appInstance.globalData.msg = "我是修改之后的数据";
+    // console.log('appInstance2', appInstance.globalData.msg)
+
+    /*
+      下面代码是进行BUG1修复:C3效果和播放状态不统一
+     */
+    let { audioId , playState } = appInstance.globalData;
+    if (playState && audioId === songId) { 
+      this.setData({
+        isPlay:true
+      })
+    }
   },
 
   /**
