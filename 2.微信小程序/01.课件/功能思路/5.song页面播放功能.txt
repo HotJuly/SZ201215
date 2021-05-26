@@ -1,0 +1,12 @@
+需求:当用户点击播放按钮时,让当前歌曲进入播放状态
+拆解:
+	1.当用户点击播放按钮时
+		事件名:tap
+	2.让当前歌曲进入播放状态
+		1)如何播放歌曲
+			1.获取到全局唯一的背景音频管理器
+				let backgroundAudioManager = wx.getBackgroundAudioManager()
+			2.使用背景音频管理器播放歌曲
+				backgroundAudioManager .src="歌曲链接"
+		2)如何让页面进入播放状态
+			通过C3效果控制页面播放,可以给songContainer元素添加一个isplay类名
