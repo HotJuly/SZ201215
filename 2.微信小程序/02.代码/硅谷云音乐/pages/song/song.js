@@ -16,6 +16,31 @@ Page({
     songId:null
   },
 
+  // 用于监视背景音频的播放状态
+  addEvent(){
+    // 用于监视背景音频播放事件
+    this.backgroundAudioManager.onPlay(() => {
+      // console.log('onPlay')
+
+      // 记录当前歌曲的播放状态
+      appInstance.globalData.playState = true;
+
+      this.setData({
+        isPlay: true
+      })
+    });
+
+    // 用于监视背景音频暂停事件
+    this.backgroundAudioManager.onPause(() => {
+      // console.log('onPlay')
+      // 记录当前歌曲的播放状态
+      appInstance.globalData.playState = false;
+      this.setData({
+        isPlay: false
+      })
+    });
+  },
+
   // 用于请求歌曲url
   async getMusicUrl(){
     //请求当前歌曲音频资料
@@ -56,11 +81,11 @@ Page({
       */
 
     // 1.获取到全局唯一的背景音频管理器
-    let backgroundAudioManager = wx.getBackgroundAudioManager();
+    // let backgroundAudioManager = wx.getBackgroundAudioManager();
 
     if(this.data.isPlay){
       //暂停音频播放
-      backgroundAudioManager.pause();
+      this.backgroundAudioManager.pause();
 
       // 记录当前歌曲的播放状态
       appInstance.globalData.playState = false;
@@ -68,8 +93,8 @@ Page({
     } else {
       // 2.使用背景音频管理器播放歌曲
       // 注意:只添加src不够,title也是必填属性,不添加不能播放音乐
-      backgroundAudioManager.src = this.data.musicUrl;
-      backgroundAudioManager.title = this.data.songObj.name;
+      this.backgroundAudioManager.src = this.data.musicUrl;
+      this.backgroundAudioManager.title = this.data.songObj.name;
 
       // 记录当前播放的歌曲id,用于后续再次进入页面判断播放状态使用
       appInstance.globalData.audioId = this.data.songId;
@@ -142,14 +167,19 @@ Page({
       this.getMusicDetail();
       await this.getMusicUrl();
 
-      let backgroundAudioManager= wx.getBackgroundAudioManager();
+      // let backgroundAudioManager= wx.getBackgroundAudioManager();
 
-      backgroundAudioManager.src = this.data.musicUrl;
-      backgroundAudioManager.title = this.data.songObj.name;
+      this.backgroundAudioManager.src = this.data.musicUrl;
+      this.backgroundAudioManager.title = this.data.songObj.name;
 
       appInstance.globalData.audioId = this.data.songId;
       appInstance.globalData.playState = true;
     })
+
+
+    this.backgroundAudioManager = wx.getBackgroundAudioManager();
+    this.addEvent();
+    
   },
 
   /**
