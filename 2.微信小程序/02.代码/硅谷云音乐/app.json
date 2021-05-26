@@ -1,15 +1,17 @@
 {
   "pages": [
+    "pages/recommendSong/recommendSong",
+    "pages/index/index",
     "pages/video/video",
     "pages/personal/personal",
     "pages/login/login",
-    "pages/index/index"
+    "pages/song/song"
   ],
   "window": {
     "navigationBarBackgroundColor": "#d43c33",
     "navigationBarTitleText": "硅谷云音乐",
     "navigationBarTextStyle": "white",
-    "enablePullDownRefresh":true
+    "enablePullDownRefresh": true
   },
   "tabBar": {
     "color": "#333",
