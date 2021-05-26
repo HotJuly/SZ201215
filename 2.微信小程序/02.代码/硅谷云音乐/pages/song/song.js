@@ -16,6 +16,37 @@ Page({
     songId:null
   },
 
+  // 用于请求歌曲url
+  async getMusicUrl(){
+    //请求当前歌曲音频资料
+    let urlData = await req("/song/url", { id: this.data.songId });
+    // console.log('urlData', urlData);
+    this.setData({
+      musicUrl: urlData.data[0].url
+    })
+  },
+
+  // 用于请求歌曲详细信息
+  async getMusicDetail(){
+    let songData = await req('/song/detail', {
+      ids: this.data.songId
+    });
+    this.setData({
+      songObj: songData.songs[0]
+    })
+
+    // 通过jsAPI动态修改当前页面标题
+    wx.setNavigationBarTitle({
+      title: this.data.songObj.name
+    })
+  },
+
+  // 用于监视用户点击上一首/下一首按钮的操作
+  switchType(event){
+    // console.log('switchType')
+    PubSub.publish('switchType',event.currentTarget.id);
+  },
+
   // 用于处理用户点击播放按钮操作
   handlePlay(){
       /* 
@@ -58,30 +89,34 @@ Page({
     // console.log('options',options)
     let {songId} = options;
     // console.log(songId)
-
-
-    //请求当前歌曲详细信息(但是没有url链接)
-    let songData = await req('/song/detail',{
-      ids:songId
-    });
-    // console.log('songData',songData)
     this.setData({
-      songObj:songData.songs[0],
       songId
     })
 
-    // 通过jsAPI动态修改当前页面标题
-    wx.setNavigationBarTitle({
-      title:this.data.songObj.name
-    })
+    //请求当前歌曲详细信息(但是没有url链接)
+    // let songData = await req('/song/detail',{
+    //   ids:songId
+    // });
+    // // console.log('songData',songData)
+    // this.setData({
+    //   songObj:songData.songs[0],
+    //   songId
+    // })
+
+    // // 通过jsAPI动态修改当前页面标题
+    // wx.setNavigationBarTitle({
+    //   title:this.data.songObj.name
+    // })
+    this.getMusicDetail();
 
 
     //请求当前歌曲音频资料
-    let urlData = await req("/song/url", { id: songId});
-    // console.log('urlData', urlData);
-    this.setData({
-      musicUrl:urlData.data[0].url
-    })
+    // let urlData = await req("/song/url", { id: songId});
+    // // console.log('urlData', urlData);
+    // this.setData({
+    //   musicUrl:urlData.data[0].url
+    // })
+    this.getMusicUrl();
 
     // console.log('appInstance', appInstance)
     // console.log('appInstance1', appInstance.globalData.msg)
@@ -97,6 +132,24 @@ Page({
         isPlay:true
       })
     }
+
+    PubSub.subscribe('sendId', async (msg,songId)=>{
+      // console.log('sendId',data)
+      this.setData({
+        songId
+      })
+
+      this.getMusicDetail();
+      await this.getMusicUrl();
+
+      let backgroundAudioManager= wx.getBackgroundAudioManager();
+
+      backgroundAudioManager.src = this.data.musicUrl;
+      backgroundAudioManager.title = this.data.songObj.name;
+
+      appInstance.globalData.audioId = this.data.songId;
+      appInstance.globalData.playState = true;
+    })
   },
 
   /**

@@ -21,6 +21,7 @@
       wx:key="id"
       bindtap="toSong"
       data-songid="{{item.id}}"
+      data-index="{{index}}"
       >
         <image src="{{item.album.picUrl}}"></image>
         <view class="musicContent">

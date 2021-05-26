@@ -1,5 +1,6 @@
 // pages/recommendSong/recommendSong.js
 import req from '../../utils/req.js';
+import PubSub from 'pubsub-js';
 Page({
 
   /**
@@ -8,7 +9,8 @@ Page({
   data: {
     day: "--",
     month: "--",
-    recommendList:[]
+    recommendList:[],
+    currentIndex:null
   },
 
   toSong(event){
@@ -18,7 +20,10 @@ Page({
         但是由于url有长度限制,所以传递的数据不能太多
      */
     // console.log(event.currentTarget.dataset.song)
-    let { songid } = event.currentTarget.dataset;
+    let { songid , index } = event.currentTarget.dataset;
+    this.setData({
+      currentIndex:index
+    })
     wx.navigateTo({
       url: '/pages/song/song?songId=' + songid
     })
@@ -67,6 +72,34 @@ Page({
     // console.log(result)
     this.setData({
       recommendList: result.recommend
+    });
+
+    PubSub.subscribe('switchType',(msg,data)=>{
+      // console.log('switchType', msg, data)
+      // 找到对应的歌曲id
+      // 当前是哪一首->跳转到song页面之前,可以先记录一下,用户点击的选项的下标
+      let { currentIndex , recommendList } =this.data;
+      let id;
+      if (data === "next") {
+        if(currentIndex === recommendList.length-1){
+          currentIndex=0;
+        } else {
+          currentIndex += 1
+        }
+      } else {
+        if (currentIndex === 0) {
+          currentIndex = recommendList.length - 1;
+        } else {
+          currentIndex -=1
+        }
+      }
+      id = recommendList[currentIndex].id
+      // console.log('id',id)
+      this.setData({
+        currentIndex
+      })
+
+      PubSub.publish('sendId',id);
     })
   },
 
