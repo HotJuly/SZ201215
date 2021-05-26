@@ -1,11 +1,11 @@
 {
   "pages": [
     "pages/recommendSong/recommendSong",
+    "pages/song/song",
     "pages/index/index",
     "pages/video/video",
     "pages/personal/personal",
-    "pages/login/login",
-    "pages/song/song"
+    "pages/login/login"
   ],
   "window": {
     "navigationBarBackgroundColor": "#d43c33",
