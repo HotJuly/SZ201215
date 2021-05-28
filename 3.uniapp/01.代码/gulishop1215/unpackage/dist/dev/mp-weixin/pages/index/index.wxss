@@ -18,6 +18,7 @@
           flex-shrink: 0;
 }
 .indexContainer .header .search {
+  position: relative;
   background: #ffc0cb;
   height: 60rpx;
   border-radius: 15rpx;
@@ -25,19 +26,53 @@
   -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
+  padding-left: 60rpx;
+}
+.indexContainer .header .search .iconfont {
+  position: absolute;
+  top: 50%;
+  left: 20rpx;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+.indexContainer .header .search .placeholder {
+  text-align: center;
+  font-size: 24rpx;
+  text-indent: -60rpx;
 }
 .indexContainer .header .username {
-  width: 126rpx;
   height: 60rpx;
-  font-size: 28rpx;
-  background: #ffc0cb;
-  border: 1rpx solid;
+  width: 128rpx;
+  font-size: 24rpx;
+  margin: 0 20rpx;
+  color: #f00;
   text-align: center;
   line-height: 60rpx;
   border-radius: 15rpx;
-  margin: 0 20rpx;
   -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
           flex-shrink: 0;
+}
+.indexContainer .navScroll {
+  white-space: nowrap;
+}
+.indexContainer .navScroll .navItem {
+  position: relative;
+  display: inline-block;
+  width: 140rpx;
+  height: 80rpx;
+  font-size: 28rpx;
+  text-align: center;
+  line-height: 80rpx;
+}
+.indexContainer .navScroll .navItem.active::after {
+  content: "";
+  height: 4rpx;
+  width: 100%;
+  position: absolute;
+  bottom: 4rpx;
+  left: 0;
+  background: #f00;
 }
 
