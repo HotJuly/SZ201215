@@ -1,5 +1,5 @@
 // pages/song/song.js
-import req from '../../utils/req.js';
+import req from '../../../utils/req.js';
 import PubSub from 'pubsub-js';
 import moment from 'moment';
 // console.log('PubSub', PubSub)
@@ -65,6 +65,12 @@ Page({
         currentTime: currentTime
       })
     });
+
+    // 用于监视背景音频播放结束事件
+    this.backgroundAudioManager.onEnded(() => {
+      // console.log('onEnded')
+      PubSub.publish('switchType', "next");
+    });
   },
 
   // 用于请求歌曲url
@@ -101,7 +107,7 @@ Page({
   },
 
   // 用于处理用户点击播放按钮操作
-  handlePlay(){
+  async handlePlay(){
       /* 
         判断当前歌曲播放状态
           如果正在播放,就暂停音频播放
@@ -110,7 +116,6 @@ Page({
 
     // 1.获取到全局唯一的背景音频管理器
     // let backgroundAudioManager = wx.getBackgroundAudioManager();
-
     if(this.data.isPlay){
       //暂停音频播放
       this.backgroundAudioManager.pause();
@@ -121,8 +126,12 @@ Page({
     } else {
       // 2.使用背景音频管理器播放歌曲
       // 注意:只添加src不够,title也是必填属性,不添加不能播放音乐
+      if (!this.data.musicUrl){
+        await this.getMusicUrl();
+      }
       this.backgroundAudioManager.src = this.data.musicUrl;
       this.backgroundAudioManager.title = this.data.songObj.name;
+      this.backgroundAudioManager.startTime = 155;
 
       // 记录当前播放的歌曲id,用于后续再次进入页面判断播放状态使用
       appInstance.globalData.audioId = this.data.songId;
@@ -169,7 +178,7 @@ Page({
     // this.setData({
     //   musicUrl:urlData.data[0].url
     // })
-    this.getMusicUrl();
+    // this.getMusicUrl();
 
     // console.log('appInstance', appInstance)
     // console.log('appInstance1', appInstance.globalData.msg)

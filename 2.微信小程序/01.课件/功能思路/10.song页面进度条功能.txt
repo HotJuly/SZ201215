@@ -5,3 +5,4 @@
 	2.进度条的宽度也要随之更新
 		更改data中的currentWidth就可以改变进度条长度
 		可以通过bakcgroundAudioManager.currentTime获取到当前音频的已播放时间
+		进度条宽度 = 当前时间 / 总时间
