@@ -1,0 +1,6 @@
+UNIAPP					小程序
+manifest.json				project.config.json		项目的说明书(需要设置uniappID和小程序的AppId)
+pages.json(pages属性用于注册路由)		app.json+所有页面配置	整个小程序的配置文件
+main.js+App.vue				app.js+app.wxss		注册整个小程序,包括全局样式
+unpackage(编译成小程序之后的代码)
+pages页面中的index.vue			index.js+index.wxss+index.wxml
