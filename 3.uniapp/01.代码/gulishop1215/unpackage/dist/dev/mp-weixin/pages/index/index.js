@@ -131,16 +131,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
 //
 //
 //
@@ -170,13 +161,33 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 var _default =
 {
   data: function data() {
-    return {};
+    return {
+      indexData: {} };
 
   },
-  onLoad: function onLoad() {
+  // onLoad() {
+  // 	/*
+  // 		1.在哪发
+  // 			Vue ->	mounted或者created
+  // 			小程序	->	onLoad
+  // 		2.怎么发
+  // uni.request(OBJECT)
+  // 		3.往哪发
+  // 	*/
+  // 	console.log('onLoad')
+  // },
+  mounted: function mounted() {var _this = this;
+    // console.log('mounted')
+    uni.request({
+      url: "http://localhost:3000/getIndexData",
+      success: function success(res) {
+        // console.log(res)
+        _this.indexData = res.data;
+      } });
 
   },
   methods: {} };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 21 */

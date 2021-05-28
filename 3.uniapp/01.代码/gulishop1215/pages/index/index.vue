@@ -15,21 +15,12 @@
 		</view>
 		
 		<!-- 导航滑动区域 -->
-		<scroll-view scroll-x  class="navScroll" >
+		<scroll-view scroll-x  class="navScroll" v-if="indexData.kingKongModule">
 			<view class="navItem active">推荐</view>
-			<view class="navItem">居家生活</view>
-			<view class="navItem">居家生活</view>
-			<view class="navItem">居家生活</view>
-			<view class="navItem">居家生活</view>
-			<view class="navItem">居家生活</view>
-			<view class="navItem">居家生活</view>
-			<view class="navItem">居家生活</view>
-			<view class="navItem">居家生活</view>
-			<view class="navItem">居家生活</view>
-			<view class="navItem">居家生活</view>
-			<view class="navItem">居家生活</view>
-			<view class="navItem">居家生活</view>
-			<view class="navItem">居家生活</view>
+			<view class="navItem" 
+				v-for="item in indexData.kingKongModule.kingKongList"
+				:key="item.L1Id"
+			>{{item.text}}</view>
 		</scroll-view>
 	</view>
 </template>
@@ -38,10 +29,29 @@
 	export default {
 		data() {
 			return {
+					indexData:{}
 			}
 		},
-		onLoad() {
-
+		// onLoad() {
+		// 	/*
+		// 		1.在哪发
+		// 			Vue ->	mounted或者created
+		// 			小程序	->	onLoad
+		// 		2.怎么发
+					// uni.request(OBJECT)
+		// 		3.往哪发
+		// 	*/
+		// 	console.log('onLoad')
+		// },
+		mounted(){
+			// console.log('mounted')
+			uni.request({
+				url:"http://localhost:3000/getIndexData",
+				success:(res)=>{
+					// console.log(res)
+					this.indexData = res.data;
+				}
+			})
 		},
 		methods:{
 
