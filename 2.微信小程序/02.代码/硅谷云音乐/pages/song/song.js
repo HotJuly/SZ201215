@@ -1,7 +1,8 @@
 // pages/song/song.js
 import req from '../../utils/req.js';
 import PubSub from 'pubsub-js';
-console.log('PubSub', PubSub)
+import moment from 'moment';
+// console.log('PubSub', PubSub)
 
 let appInstance = getApp();
 Page({
@@ -13,7 +14,11 @@ Page({
     songObj:{},
     musicUrl:"",
     isPlay:false,
-    songId:null
+    songId:null,
+    currentWidth:0,
+    currentTime: 0,
+    // currentTime: "00:00",
+    durationTime:0
   },
 
   // 用于监视背景音频的播放状态
@@ -25,9 +30,13 @@ Page({
       // 记录当前歌曲的播放状态
       appInstance.globalData.playState = true;
 
-      this.setData({
-        isPlay: true
-      })
+      // 如果当前页面和正在播放的背景音频是同一首歌,才操作页面状态
+      if(appInstance.globalData.audioId === this.data.songId){
+        this.setData({
+          isPlay: true
+        })
+      }
+     
     });
 
     // 用于监视背景音频暂停事件
@@ -35,8 +44,25 @@ Page({
       // console.log('onPlay')
       // 记录当前歌曲的播放状态
       appInstance.globalData.playState = false;
+
+      if (appInstance.globalData.audioId === this.data.songId) {
+        this.setData({
+          isPlay: false
+        })
+      }
+    });
+
+
+    // 用于监视背景音频播放进度更新事件
+    this.backgroundAudioManager.onTimeUpdate(() => {
+      // console.log('onTimeUpdate', this.backgroundAudioManager.currentTime)
+      let { currentTime } = this.backgroundAudioManager;
+      let { dt } = this.data.songObj;
+      let currentWidth = currentTime * 1000 * 100 / dt;
       this.setData({
-        isPlay: false
+        currentWidth,
+        // currentTime: moment(currentTime * 1000).format('mm:ss')
+        currentTime: currentTime
       })
     });
   },
@@ -57,7 +83,9 @@ Page({
       ids: this.data.songId
     });
     this.setData({
-      songObj: songData.songs[0]
+      songObj: songData.songs[0],
+      // durationTime: moment(songData.songs[0].dt).format('mm:ss')
+      durationTime: songData.songs[0].dt
     })
 
     // 通过jsAPI动态修改当前页面标题

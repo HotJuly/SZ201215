@@ -1,3 +1,4 @@
+<wxs src="./myFilter.wxs" module="myFilter" />
 <view class="songContainer {{isPlay?'isplay':''}}">
   <text>{{songObj.ar[0].name}}</text>
   <view class="keng"></view>
@@ -7,6 +8,18 @@
     <image class="bigImg" src="{{songObj.al.picUrl}}"></image>
   </view>
 
+  <!-- 进度条区域 -->
+  <view class="barContainer">
+    <text class="currentTime">{{myFilter.timeFilter(currentTime,'s')}}</text>
+    <view class="wrap">
+      <view class="inner" style="width:{{currentWidth}}%">
+        <view class="point"></view>
+      </view>
+    </view>
+    <text class="durationTime">{{myFilter.timeFilter(durationTime,'ms')}}</text>
+  </view>
+
+  <!-- 音乐控制器 -->
   <view class="musicControl">
     <text class="iconfont icon-iconsMusicyemianbofangmoshiShuffle" ></text>
     <text class="iconfont icon-shangyishou" id="pre" bindtap="switchType"></text>

@@ -1,0 +1,7 @@
+需求:当歌曲播放进度更新的时候,进度条的宽度也要随之更新
+拆解:
+	1.当歌曲播放进度更新的时候
+		给背景音频管理器绑定TimeUpdate事件监听
+	2.进度条的宽度也要随之更新
+		更改data中的currentWidth就可以改变进度条长度
+		可以通过bakcgroundAudioManager.currentTime获取到当前音频的已播放时间
