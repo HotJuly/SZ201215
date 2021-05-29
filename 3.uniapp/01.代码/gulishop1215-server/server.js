@@ -43,6 +43,12 @@ router.get('/getIndexData',function(ctx,next){
 	ctx.body=indexData;
 })
 
+const categoryDatas = require('./datas/categoryDatas.json');
+router.get('/getCategoryDatas',function(ctx,next){
+	// console.log('/test get success')
+	ctx.body=categoryDatas;
+})
+
 	// 3.将服务器实例运行在电脑上的某个端口
 app.listen('3000',function(error){
 	if(error){
