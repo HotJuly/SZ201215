@@ -38,15 +38,26 @@
 		// 			Vue ->	mounted或者created
 		// 			小程序	->	onLoad
 		// 		2.怎么发
-					// uni.request(OBJECT)
+		// 			uni.request(OBJECT)
 		// 		3.往哪发
 		// 	*/
 		// 	console.log('onLoad')
 		// },
+		// created() {
+		// 	/*
+		// 		1.在哪发
+		// 			Vue ->	mounted或者created
+		// 			小程序	->	onLoad
+		// 		2.怎么发
+		// 			uni.request(OBJECT)
+		// 		3.往哪发
+		// 	*/
+		// 	console.log('created')
+		// },
 		mounted(){
 			// console.log('mounted')
-			uni.request({
-				url:"http://localhost:3000/getIndexData",
+			wx.request({
+				url:"/api/getIndexData",
 				success:(res)=>{
 					// console.log(res)
 					this.indexData = res.data;
