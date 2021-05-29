@@ -16,20 +16,33 @@
 		
 		<!-- 导航滑动区域 -->
 		<scroll-view scroll-x  class="navScroll" v-if="indexData.kingKongModule">
-			<view class="navItem active">推荐</view>
 			<view class="navItem" 
-				v-for="item in indexData.kingKongModule.kingKongList"
+			:class="navIndex===-1?'active':''"
+			@click="changIndex(-1)"
+			>推荐</view>
+			<view class="navItem" 
+				:class="navIndex===index?'active':''"
+				@click="changIndex(index)"
+				v-for="(item,index) in indexData.kingKongModule.kingKongList"
 				:key="item.L1Id"
 			>{{item.text}}</view>
 		</scroll-view>
+		
+		<!-- 内容区域 -->
+		<Recommend v-if="navIndex===-1"/>
+		<Categorys v-else/>
 	</view>
 </template>
 
 <script>
+	import Recommend from '../../components/recommend/recommend.vue';
+	import Categorys from '../../components/categorys/categorys.vue';
+	import req from '../../utils/req.js';
 	export default {
 		data() {
 			return {
-					indexData:{}
+					indexData:{},
+					navIndex:-1
 			}
 		},
 		// onLoad() {
@@ -54,18 +67,29 @@
 		// 	*/
 		// 	console.log('created')
 		// },
-		mounted(){
+		async mounted(){
 			// console.log('mounted')
-			wx.request({
-				url:"/api/getIndexData",
-				success:(res)=>{
-					// console.log(res)
-					this.indexData = res.data;
-				}
-			})
+			// uni.request({
+			// 	url:"/api/getIndexData",
+			// 	success:(res)=>{
+			// 		// console.log(res)
+			// 		this.indexData = res.data;
+			// 	}
+			// })
+			// h5专用请求地址,因为经过了proxy
+			// let res = await req("/api/getIndexData");
+			let res = await req("/getIndexData");
+			// console.log('res',res)
+			this.indexData = res;
 		},
 		methods:{
-
+			changIndex(index){
+				this.navIndex=index;
+			}
+		},
+		components:{
+			Recommend:Recommend,
+			Categorys:Categorys
 		}
 	}
 </script>
