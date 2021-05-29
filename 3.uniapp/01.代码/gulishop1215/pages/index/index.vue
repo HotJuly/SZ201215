@@ -38,10 +38,11 @@
 	import Recommend from '../../components/recommend/recommend.vue';
 	import Categorys from '../../components/categorys/categorys.vue';
 	import req from '../../utils/req.js';
+	import {mapState} from 'vuex';
 	export default {
 		data() {
 			return {
-					indexData:{},
+					// indexData:{},
 					navIndex:-1
 			}
 		},
@@ -78,9 +79,11 @@
 			// })
 			// h5专用请求地址,因为经过了proxy
 			// let res = await req("/api/getIndexData");
-			let res = await req("/getIndexData");
-			// console.log('res',res)
-			this.indexData = res;
+			// let res = await req("/getIndexData");
+			// // console.log('res',res)
+			// this.indexData = res;
+			this.$store.dispatch('getIndexData');
+			// console.log('msg',this.$store.state.home.msg)
 		},
 		methods:{
 			changIndex(index){
@@ -90,6 +93,14 @@
 		components:{
 			Recommend:Recommend,
 			Categorys:Categorys
+		},
+		computed:{
+			// indexData(){
+			// 	return this.$store.state.home.indexData
+			// },
+			...mapState({
+				indexData:(state)=>state.home.indexData
+			})
 		}
 	}
 </script>

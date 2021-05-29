@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App'
+import store from './store/index.js'
 
 Vue.config.productionTip = false
 
@@ -8,6 +9,7 @@ Vue.config.productionTip = false
 App.mpType = 'app'
 
 const app =new Vue({
+	store,
     ...App
 		// onLaunch: function() {
 		// 	console.log('App Launch2')
@@ -17,6 +19,7 @@ const app =new Vue({
 		// },
 		// onHide: function() {
 		// 	console.log('App Hide')
-		// }
+		// },
+		
 })
 app.$mount()
