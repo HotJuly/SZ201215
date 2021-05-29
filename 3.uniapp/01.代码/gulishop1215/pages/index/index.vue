@@ -29,8 +29,10 @@
 		</scroll-view>
 		
 		<!-- 内容区域 -->
-		<Recommend v-if="navIndex===-1"/>
-		<Categorys v-else/>
+		<scroll-view class="contentScroll" scroll-y>
+			<Recommend v-if="navIndex===-1"/>
+			<Categorys v-else/>
+		</scroll-view>
 	</view>
 </template>
 
@@ -163,6 +165,10 @@
 					bottom 4upx
 					left 0
 					background red
+		.contentScroll
+			// 小程序高度计算 height = 100vh - header高度 - nav高度
+			// h5高度计算 height = 100vh - header高度 - nav高度 -导航栏高度 - tabBar高度
+			height calc( 100vh - 80upx - 80upx - var(--window-top) - var(--window-bottom))
 			
 		
 	
