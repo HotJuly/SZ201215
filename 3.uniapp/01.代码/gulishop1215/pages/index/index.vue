@@ -31,14 +31,15 @@
 		<!-- 内容区域 -->
 		<scroll-view class="contentScroll" scroll-y>
 			<Recommend v-if="navIndex===-1"/>
-			<Categorys v-else/>
+			<CateList v-else :navIndex="navIndex"/>
 		</scroll-view>
 	</view>
 </template>
 
 <script>
 	import Recommend from '../../components/recommend/recommend.vue';
-	import Categorys from '../../components/categorys/categorys.vue';
+	// import Categorys from '../../components/categorys/categorys.vue';
+	import CateList from '../../components/cateList/cateList.vue';
 	import req from '../../utils/req.js';
 	import {mapState} from 'vuex';
 	export default {
@@ -94,7 +95,8 @@
 		},
 		components:{
 			Recommend:Recommend,
-			Categorys:Categorys
+			// Categorys:Categorys,
+			CateList:CateList
 		},
 		computed:{
 			// indexData(){

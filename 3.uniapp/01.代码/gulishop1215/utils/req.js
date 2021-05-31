@@ -24,6 +24,9 @@ export default function(url,data={},method="GET"){
 			url:baseUrl + url,
 			data,
 			method,
+			header:{
+				token:uni.getStorageSync('token')
+			},
 			success(res) {
 				// console.log(res)
 				// 由于res是响应报文,其中一定有data(响应体),所以统一返回data

@@ -19,6 +19,8 @@
 */
 const Koa = require('koa');
 const KoaRouter = require('koa-router');
+const Fly=require("flyio/src/node");
+const fly=new Fly;
 
 // const app = express();
 	// 2.创建服务器实例对象
@@ -47,6 +49,39 @@ const categoryDatas = require('./datas/categoryDatas.json');
 router.get('/getCategoryDatas',function(ctx,next){
 	// console.log('/test get success')
 	ctx.body=categoryDatas;
+})
+
+const indexCateList = require('./datas/indexCateList.json');
+router.get('/getindexCateList',async function(ctx,next){
+	console.log('/getindexCateList get success')
+	await new Promise((resolve,reject)=>{
+		setTimeout(resolve,2000);
+	})
+	// setTimeout(()=>{
+	ctx.body=indexCateList;
+	// },2000)
+})
+
+const goods = require('./datas/goods.json');
+router.get('/getGoodDetail',async function(ctx,next){
+	console.log('/goods get success');
+	const {goodId}  = ctx.query;
+	let good = goods.find((good,index)=>{
+		return good.id === goodId >>> 0
+	})
+	ctx.body=good
+})
+
+
+router.get('/getOpenId',async function(ctx,next){
+	const {code}  = ctx.query;
+	const appId = 'wxe5931a68ea66cece';
+	const appSecret = 'f0b55ff9ceb43ccc477437ed6143a02e';
+	const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`;
+
+	let result = await fly.get(url);
+	let {openid} = JSON.parse(result.data);
+	ctx.body=openid
 })
 
 	// 3.将服务器实例运行在电脑上的某个端口

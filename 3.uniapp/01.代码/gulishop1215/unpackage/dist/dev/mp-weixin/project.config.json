@@ -8,9 +8,11 @@
 		"es6": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.17.0",
-	"appid": "touristappid",
+	"libVersion": "2.7.0",
+	"appid": "wxe5931a68ea66cece",
 	"projectname": "uniapp-init",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,

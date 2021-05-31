@@ -1,13 +1,21 @@
 <script>
+	import req from './utils/req.js';
 	export default {
 		onLaunch: function() {
-			console.log('App Launch2')
+			// console.log('App Launch2')
+			wx.login({
+				success:async ({code})=>{
+					// console.log(res)
+					let openid = await req('/getOpenId',{code});
+					uni.setStorageSync('token',openid);
+				}
+			})
 		},
 		onShow: function() {
-			console.log('App Show')
+			// console.log('App Show')
 		},
 		onHide: function() {
-			console.log('App Hide')
+			// console.log('App Hide')
 		}
 	}
 </script>
