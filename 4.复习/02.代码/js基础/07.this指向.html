@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function a(c,k){
+            console.log(this,c,k)
+        }
+
+        //普通调用,this为window
+        // a();
+
+        // //构造调用,this为实例对象
+        // new a();
+
+        // //隐式调用,this为前面的对象
+        // var obj = {
+        //     a:a
+        // }
+        // obj.a();
+
+        // //显式调用,this为第一个参数
+        // a.call(obj)
+
+        /*
+            call和apply的区别
+            相同点:
+                1.都可以改变函数本次执行的this指向
+                2.如果第一个参数的值是null或者undefined,this指向window
+                3.他们都会去自动调用原函数
+            不同点:
+                a.call(this指向,参数1,参数2,参数3)
+                a.apply(this指向,[参数1,参数2,参数3])
+
+            call和apply能不能修改箭头函数的this指向
+                1.箭头函数没有自己的this,他是用的是外层作用域的this
+                2.箭头函数不能构造调用
+                3.箭头函数没有原型对象
+        
+        */
+
+        // var length = 6;
+
+        // var obj = {
+        //     length:3,
+        //     bar:function(){
+        //         return this.length;
+        //     }
+        // };
+
+        // (function(){
+
+        //     var length = 2;
+
+        //     console.log(arguments[0]());
+        //     // console.log(arguments.0());
+        //     // console.log(obj.bar());
+
+        // })(obj.bar);
+
+        // 手写实现call
+        Function.prototype.myCall= function(thatThis,...args){
+            if(thatThis){
+                thatThis.any = this;
+                // thatThis.any(...args);
+                eval("thatThis.any("+ args.toString() +")")
+                delete thatThis.any;
+            }else{
+                this(...args);
+            }
+        }
+        var obj = {name:"xiaoming"}
+        // a.myCall(obj,2,3);
+
+        /*
+            bind函数和call/apply
+            bind函数的作用:根据旧的函数,生成全新的函数,并且修改该函数内部的this
+            区别:
+                1.bind不会自动调用函数,需要再次括号调用
+                2.返回值是全新的函数
+                3.bind需要的实参可以分批传入
+
+        */
+        //手写实现bind
+
+        Function.prototype.myBind = function(thatThis,...args){
+            var that = this;
+            return function(...args2){
+                that.call(obj,...args,...args2);
+            }   
+        }
+        a.myBind(obj,2)(3)
+    </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            作用域的作用:
+                收集当前代码区域中所有的变量
+            在编程界,作用域分为两种,静态作用域(词法作用域)和动态作用域
+                js中只有静态作用域,也就是说作用域的范围在函数创建的一瞬间已经决定没并且无法修改
+                js中作用域,分为三种
+                    全局作用域
+                    局部作用域
+                    块级作用域
+        */
+        // function b(){
+        //     person();
+        // }
+
+        // // 函数声明
+        // function person(){
+        //     console.log('person',a);
+        //     return 123;
+        // }
+
+        // // 函数表达式
+        // // var person = new Function()
+
+        // // 变量声明
+        // var a = b();
+
+
+        // console.log(a)
+
+
+        // 注意:
+        // 如果属性值是一个具名函数,
+            // 第一他不会被代码提升,
+            // 第二当前函数名仅在内部可见
+            // 第三当前函数名值不可修改
+        // 如果是具名函数自调用,效果同上
+        var fn=7;
+        // var obj = {
+        //     fn:6,
+        //     fn:function fn(){
+        //         console.log('fn',fn)
+        //         fn=8;
+        //         console.log('fn',fn)
+        //     }
+        // }
+        // obj.fn();
+        // console.log(fn)
+
+        // ;(function fn(){
+        //     console.log(fn)
+        //     fn=9;
+        //     console.log(fn)
+        // })();
+        // console.log(fn)
+
+    </script>
+</body>
+</html>

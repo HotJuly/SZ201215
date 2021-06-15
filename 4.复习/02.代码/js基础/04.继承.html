@@ -17,50 +17,121 @@
         又有一个老师, 它有教授课程的属性, 能介绍它的所有信息
     */
 
-    function Person(name,age){
-        this.name=name;
-        this.age=age;
-        Person.prototype.count +=1;
-    }
-    Person.prototype.count= 0;
-    Person.prototype.sayHello= function(){
-        console.log(`我叫做${this.name},我今年${this.age}岁`)
-    }
+    // function Person(name,age){
+    //     this.name=name;
+    //     this.age=age;
+    //     Person.prototype.count +=1;
+    // }
+    // Person.prototype.count= 0;
+    // Person.prototype.sayHello= function(){
+    //     console.log(`我叫做${this.name},我今年${this.age}岁`)
+    // }
 
-    var p1 = new Person('ming',23);
-    var p2 = new Person('hong',22);
-    console.log(p1,p2)
-    p1.sayHello();
-    p2.sayHello();
-    console.log(p1.sayHello===p2.sayHello,p1.count)
+    // var p1 = new Person('ming',23);
+    // var p2 = new Person('hong',22);
+    // console.log(p1,p2)
+    // p1.sayHello();
+    // p2.sayHello();
+    // console.log(p1.sayHello===p2.sayHello,p1.count)
 
 
-    /*
-        组合继承
-            1.为了使用到Person类的sayHello方法,必须让Person.prototype出现在s1的原型链上
-                Student.prototype = new Person();
-            2.借用父类Person的构造函数,用于加工当前实例对象
-                用于获取父类实例对象所有的属性
-    */
-    function Student(name,age,price){
-        Person.call(this,name,age);
-        // console.log('this',this)
-        this.price=price;
-    }
+    // /*
+    //     组合继承
+    //         1.为了使用到Person类的sayHello方法,必须让Person.prototype出现在s1的原型链上
+    //             Student.prototype = new Person();
+    //             Student.prototype.construcotr = Student;
 
-    Student.prototype = new Person();
-    Student.prototype.construcotr = Student;
-    Student.prototype.sayHello= function(){
-        console.log(`我叫做${this.name},我今年${this.age}岁,我有${this.price}元钱`)
-    }
+    //             流程 :s1.sayHello -> s1.__proto__.sayHello ->p1.sayHello ->p1.__proto__.sayHello
+    //         2.借用父类Person的构造函数,用于加工当前实例对象
+    //             用于获取父类实例对象所有的属性
+    // */
+    // function Student(name,age,price){
+    //     Person.call(this,name,age);
+    //     // console.log('this',this)
+    //     this.price=price;
+    // }
 
-    var s1 = new Student('wang',38,10000000000000);
+    // Student.prototype = new Person();
+    // Student.prototype.construcotr = Student;
+    // Student.prototype.sayHello= function(){
+    //     console.log(`我叫做${this.name},我今年${this.age}岁,我有${this.price}元钱`)
+    // }
+
+    // var s1 = new Student('wang',38,10000000000000);
     
-    console.log('s1',s1)
-    s1.sayHello();
+    // console.log('s1',s1)
+    // s1.sayHello();
     // s1.sayHello() =>s1.__proto__.sayHello()=>Object.prototype.sayHello()
 
 
+
+    /* 
+    使用构造函数和ES6的类设计并测试以下需要
+    需求1: 
+        现在2个人, 都有姓名与年龄(值自己指定), 都能自我介绍自己的姓名和年龄, 能得到当前的总人数
+    需求2: 
+        现在又有了一个学生, 它有身价的属性, 能介绍它的所有信息
+        又有一个老师, 它有教授课程的属性, 能介绍它的所有信息
+    */
+
+    /*
+        什么是方法
+            方法是特殊的属性,特殊在属性值类型是函数
+        class中的属性
+            如果值是函数,方法会直接添加在原型对象
+            如果值是非函数,会直接添加在实例对象上
+        static
+            static修饰的函数,会被直接添加在当前构造函数的自身身上(不会放到原型对象上)
+        extends
+            对应组合继承中的第一步,让父类的原型对象出现在子类的原型链上
+        super的使用方法
+            作为函数使用,相当于在借调父类构造器函数,必须要有
+                Person.call(this,name,age)
+            作为对象使用
+                如果是在static函数中使用,super代表父类自身
+                如果不是在static函数中使用,super代表父类的原型对象
+
+    */
+
+    class Person{
+        constructor(name,age){
+            this.name=name;
+            this.age=age;
+        }
+
+        count = 6;
+
+        sayHello(){
+            console.log(`我叫做${this.name},我今年${this.age}岁`)
+        }
+
+        static say(){
+            console.log('say')
+        }
+    }
+
+    class Student extends Person{
+        constructor(name,age,price){
+            // Person.call(this,name,age)
+            super(name,age);
+            // this.name=name;
+            // this.age=age;
+            this.price=price;
+            console.log(super.sayHello)
+        }
+
+        static sayHello(){
+            super.say()
+        //  console.log(`我叫做${this.name},我今年${this.age}岁,我有${this.price}元钱`)
+        }
+    }
+
+    var p1 = new Person('ming',23);
+    var s1 = new Student('hong',26,1000000);
+    // console.log(p1,Person,Person.prototype)
+    p1.sayHello();
+    // Person.say();
+    Student.sayHello();
     </script>
 </body>
 </html>
