@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function Person(name){
+            this.name=name;
+        }
+        let p1 =  new Person('xiaoming');
+        Person.prototype.a = 'hello';
+        Person.prototype.c = 2;
+        // p1.c+=1;
+        // p1.c = p1.c + 1;
+        // p1.c = (p1.c + 1);
+        // p1.c = (p1.__proto__.c + 1);
+        // p1.c = (2 + 1);
+        
+        p1.c+=1;
+        console.log('p1',p1,p1.c,Person.prototype.c)
+        // console.log('p1',p1.toString())
+        /*
+            查找顺序:
+                1.首先在p1身上查找toString
+                2.再次查找p1.__proto__.toSrting  => Person.prototype.toSrting
+                3.继续往上找p1.__proto__.__proto__.toSrting => Object.prototype.toString
+
+            a.b的查找流程:
+                如果a没声明过,报错 a is not defined
+                如果a声明过,值为undefined或者null,报错 Cann't read proprety of null
+                如果a有值:
+                    值为基本数据类型,不会报错,但是会返回undefined
+                        涉及面试题,包装类和基本数据类型面试题
+                    值为对象数据类型
+                        查找a身上是否具有b属性
+                            如果有值,直接返回
+                            如果没有继续a.__proto__.b顺着隐式原型链往上查找,找到原型链的顶端还没找到就返回undefined
+                        
+
+        */
+            // var num = 123;
+            // num.a = 6;
+            // console.log(num,num.a)
+
+        // 面试题:现在有一个变量a,内部存放数据,请判断当前变量a的值是什么数据类型
+        var a = new Date();
+        console.log(Object.prototype.toString.call(a).split(' ')[1].replace(']',''))
+    </script>
+</body>
+</html>

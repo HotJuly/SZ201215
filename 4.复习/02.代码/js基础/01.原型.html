@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            1.每个实例对象都有隐式原型属性
+            2.每个构造函数都有显式原型属性
+            3.实例对象的隐式原型指向构造函数的显式原型
+
+            如何区分函数是否是构造函数?
+                构造函数需要通过调用方式进行区分,new调用的是构造函数
+            注意:每个函数都要原型对象
+
+            new做的事情:
+                1.将形参进行声明
+                2.将所有的实参传递给对应的形参存储
+                3.创建this = new Object();
+                4.this.__proto__ = Person.prototype(一次性,瞬间最新)
+                5.默认返回this对象
+                    如果写return
+                        return的结果是对象,就返回该对象
+                        return的结果不是对象,就返回this
+        */
+        let p1 =  new Person('xiaoming');
+        function Person(name){
+            this.name=name
+            return {
+                name:666
+            };
+        }
+        console.log('p1',p1)
+
+    </script>
+</body>
+</html>
