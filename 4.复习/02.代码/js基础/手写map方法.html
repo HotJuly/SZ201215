@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            需求:仿照数组的map方法,实现一个对象的map
+            分析:
+                数组的map的特点:
+                    1.可以遍历整个数组
+                    2.返回值:根据旧数组生成的新数组
+                    3.map函数自身接受一个参数,数据类型:函数
+                    4.回调函数接受两个参数,第一个遍历的每一项,第二个遍历的下标
+
+            
+        */
+        var  arr = [1,2,3];
+        var newArr = arr.map((item,index)=>{
+            return item + 2;
+        });
+        // console.log(newArr);
+
+        var obj = {
+            name:"xiaoming",
+            age:66,
+            sex:"男"
+        }
+
+        // Object.prototype.map=function(cb){
+        //     const newObj = {};
+        //     let keys = Object.keys(this);
+        //     keys.forEach((key)=>{
+        //         let result = cb(this[key],key);
+        //         newObj[key] = result;
+        //     })
+        //     return newObj;
+        // }
+
+        
+        // Object.prototype.map=function(cb){
+        //     const newObj = {};
+        //     for(let key in this){
+        //         // console.log(key)
+        //         if(this.hasOwnProperty(key)){
+        //             let result = cb(this[key],key);
+        //             newObj[key] = result;
+        //         }
+        //     }
+        //     return newObj;
+        // }
+                
+        Object.prototype.map=function(cb){
+            const newObj = JSON.parse(JSON.stringify(this),(key,value)=>{
+                // console.log(key,value)
+                if(key){
+                    return value + "10"
+                }else{
+                    return value;
+                }
+            })
+            return newObj;
+        }
+
+
+
+        var newObj = obj.map((value,key)=>{
+            return value + "10"
+        });
+        console.log(newObj)
+
+        // {
+        //     name:"xiaoming10",
+        //     age:"6610",
+        //     sex:"男10"
+        // }
+    </script>
+</body>
+</html>

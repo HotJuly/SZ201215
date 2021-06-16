@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <ul>
+      <li>aaa</li>
+      <li>bbb</li>
+      <li>ccc</li>
+  </ul>
+  <button id="test">test</button>
+  <div id="content">
+      aaaaaaa
+  </div>
+  <script>
+      Promise.resolve().then(() => { // 微任务
+          alert('promise1') // 页面渲染了吗?没有    GUI线程慢于微任务队列
+      }) 
+      Promise.resolve().then(() => { // 微任务
+          alert('promise2') // 页面渲染了吗?没有
+      }) 
+      setTimeout(() => {// 宏任务
+          alert(document.getElementById('content').innerHTML)  // 页面渲染了吗?有   GUI线程快于宏任务队列
+      }, 0)
+      document.getElementById('test').onclick = () => {// 宏任务
+          document.getElementById('content').innerHTML = 'xxxx'  // dom渲染 
+          setTimeout(() => {// 宏任务  
+              alert(document.getElementById('content').innerHTML) // 页面更新渲染了吗?有   更新页面之后,宏任务队列还是慢于GUI线程 
+          }, 0); 
+          Promise.resolve().then(() => { // 微任务 
+              alert('promise3') //页面更新渲染了吗? 没有 更新页面之后,微任务队列还是优先于GUI线程
+          }) 
+      }
+      alert('1111') // 页面渲染了吗? 没有   GUI线程慢于主线程代码
+
+  </script>
+</body>
+</html>

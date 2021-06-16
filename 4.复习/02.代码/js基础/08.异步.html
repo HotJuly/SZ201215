@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    //同步回调函数
+    [1, 2, 3].forEach(item => {
+      console.log(item)
+    })
+    console.log('forEach()之后')
+
+    new Promise((resolve, reject) => { // excutor  执行器函数
+      console.log('执行excutor')
+      // 执行异步任务
+    })
+    console.log('new Promise()之后')
+
+    //异步回调函数
+    /*
+      异步回调函数涉及到队列问题
+        js中队列分为几种?
+          2个,宏任务队列和微任务队列
+          setTimeout的回调函数会被放到宏任务队列中
+          .then的回调函数会被放到微任务队列中
+          每次执行微任务队列都会清空当前所有的微任务
+
+          结论:如果不将主线程代码视为第一宏任务,那么微任务队列优先于宏任务队列
+    */
+    setTimeout(() => {
+      console.log('执行timeout回调')
+    }, 0);
+    console.log('setTimeout()之后')
+
+    Promise.resolve(1).then(() => {
+      console.log('promise成功的回调')
+    })
+    console.log('.then之后')
+  </script>
+</body>
+</html>
