@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // var arr = [1,2,3];
+        // var [a,b,c,d = 4] =arr;
+        // console.log(a,b,c,d)
+
+        // var arr1 = new Array(6);
+        // console.log(arr1)
+
+        // var arr2 = [1,2,[3,4,[5,6],8],8];
+        // console.log(arr2.toString().split(','))
+
+        // console.log(Object.is(NaN,NaN))
+
+        /*
+            在Vue2中,通过Object.definedProperty来劫持data中的属性,从而监视用户对数据的修改
+            在Vue3中,通过Proxy+Reflect实现对数据的监视
+        */
+
+        var obj = {
+            name:"xiaoming",
+            age:23,
+            sex:"未知"
+        }
+
+        var proxyObj = new Proxy(obj,{
+            set(target,prop,value){
+                // console.log('set')
+                // 当用户修改数据的时候,调用update重新渲染视图
+                target[prop] = value;
+            },
+            get(target,prop){
+                // console.log('get')
+                // return target[prop]
+                return Reflect.get(target,prop)
+            },
+            deleteProperty(target,prop){
+                console.log('deleteProperty')
+                Reflect.deleteProperty(target, prop)
+            }
+        })
+
+        proxyObj.name = 666;
+        delete proxyObj.sex
+        console.log(obj)
+
+        // function a(){
+        //     console.log('a')
+        // }
+
+    </script>
+</body>
+</html>
