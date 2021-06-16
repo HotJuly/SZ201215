@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            Promise构造函数接受参数类型:函数
+            执行器函数接受两个实参,实参数据类型:函数
+                1.resolve   ->可以将当前promise的状态变为完成  
+                2.reject    ->可将当前promise的状态变成失败
+                通过new Promise创建得到的实例对象,状态为pending
+
+            .then函数
+                .then接受两个参数:两个回调函数
+                    1..then之前的promise状态变成完成状态时候,会执行.then的第一个回调函数
+                    1..then之前的promise状态变成失败状态时候,会执行.then的第二个回调函数
+                    注意:其实.then不需要监视到promise从pending变成其他状态的过程,只要promise的状态不是pending就会执行对应的回调函数
+
+
+                返回值:是一个全新的promise对象
+                返回的promise状态的控制:
+                    1.resolve
+                        返回的不是一个promise对象
+                        返回一个成功的promise对象
+                    2.reject
+                        返回一个失败的promise对象
+                        代码出错
+                    注意:
+                        1.回调函数中无论是返回成功还是失败的promise,都可以间接控制.then自身返回的promise状态,但是他们不是同一个promise对象
+                        2..then之前的promise状态发生变化,如果之前没有接收到对应的回调函数,.then返回的promise状态会复制.then之前的promise状态
+
+        */
+
+        // var promise = new Promise((resolve,reject)=>{
+        //     setTimeout(()=>{
+        //         // resolve()
+        //         reject();
+        //     },2000)
+        // })
+
+        // promise
+        // .then(()=>{
+        //     console.log('success')
+        // },()=>{
+        //     console.log('fail')
+        //     return Promise.reject();
+        // }).then(()=>{
+        //     console.log('success1')
+        // })
+        // // .then(()=>{},()=>{
+        // //     console.log('fail2')
+        // // })
+        // .catch(()=>{
+        //     console.log('fail2')
+        // })
+
+        // var promise3 = new Promise((resolve,reject)=>{
+        //     setTimeout(()=>{
+        //         // resolve()
+        //         resolve(333);
+        //     },2000)
+        // })
+
+        // setTimeout(()=>{
+        //     console.log(promise3)
+        //     promise3.then((data)=>{
+        //         console.log('4000',data)
+        //     })
+        // },4000)
+
+        // console.log(promise3)
+
+
+        /*
+            await之后的代码,会被自动放在.then内部
+            await之后可以书写任何内容,但是如果是非promise对象,就是去async的意义了
+            如果想要实现类似catch效果,可以在async函数内部使用try{...}catch(e){...},他会被自动编译成.catch
+            返回值:一定是一个promise对象
+                如果在async函数中书写return,那么return的结果会作为promise的value值
+                如何控制返回的promise对象的状态
+                    只要内部代码能被执行结束,返回的promise状态,自动变成成功
+                    如果内部代码出现报错,返回的promise状态,自动变成失败
+        */
+        async function a(){
+            // try{
+            var result = await 2;
+            console.log('1',result)
+
+            var result2 = await Promise.reject();
+            console.log('2')
+
+            var result3 = await Promise.resolve();
+            console.log('3')
+
+            return Promise.resolve();
+            // this.result=result
+                
+            // }catch(e){
+
+            // }
+            // return 123;
+        }
+        // axios(url).then((result)=>{
+        //     this.result=result
+        // })
+        console.log(a())
+    </script>
+</body>
+</html>

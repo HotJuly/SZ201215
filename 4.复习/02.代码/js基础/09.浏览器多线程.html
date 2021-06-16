@@ -27,6 +27,24 @@
       }, 0)
       document.getElementById('test').onclick = () => {// 宏任务
           document.getElementById('content').innerHTML = 'xxxx'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx1'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx1'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx1'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx2'  // dom渲染 
+          document.getElementById('content').innerHTML = 'xxxx3'  // dom渲染 
           setTimeout(() => {// 宏任务  
               alert(document.getElementById('content').innerHTML) // 页面更新渲染了吗?有   更新页面之后,宏任务队列还是慢于GUI线程 
           }, 0); 
