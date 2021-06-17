@@ -24,6 +24,15 @@ Vue.config.errorHandler = function (err, vm, info) {
   如果是原生项目出现报错,使用window.onerror=function(){}捕获错误
 */
 
+Vue.mixin({
+  created(){
+    console.log(this.$options.$num);
+  }
+})
+
 new Vue({
+  // template:"<div>app</div>",
+  // el:"#app",
   render: h => h(App),
+  $num:6
 }).$mount('#app')
