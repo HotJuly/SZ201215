@@ -1,34 +1,46 @@
-面试题:Vue一共有多少个生命周期函数
-11个
+Vue一共有多少个生命周期
+一共11,常用8个
 
 初始化阶段
 beforeCreate
-	beforeCreate之前主要是在注入生命周期
+beforeCreat之前,初始化生命周期
+
 created
-	发送ajax请求获取数据
-	created之前主要是在做数据代理和数据劫持
+	发送请求->
+		如果created内部代码过多,
+			会导致页面首次渲染延后,
+			但是获取数据展示速度会更快
+	注意:别在created内部执行一些非常耗时的代码
+	beforeCreate和created之间,注入数据$data,同时实现数据代理和数据劫持
+
 beforeMount
-	beforeMount之前主要是在判断是否具有el属性,以及将template字符串编译成render
+	created和beforeMount之间,检测是否具有el属性,并将template编译成render函数
+
 mounted
-	发送ajax请求获取数据
-	操作真实DOM
-	绑定原生事件监听
-	mounted之前生成真实DOM,并挂载到页面上
+	发送请求
+	操作真实DOM相关
+	beforeMount和mounted之间,调用render函数生成虚拟DOM,在通过虚拟DOM生成真实DOM,
+	最终将生成的真实DOM替换掉el元素,从而挂载在页面上
+	注意:mounted是挂载结束,不代表渲染结束(挂载是同步挂载,但是渲染需要由GUI线程负责,所以会在微任务中渲染)
 
 更新阶段
 beforeUpdate
 updated
-	发送ajax请求获取数据
 
 卸载阶段
 beforeDestroy
+	防止内存溢出:
+		解绑原生DOM事件
+		解除定时器
+		解除全局事件总线
 destroyed
-	清除原生事件监听,定时器等
-	断开当前页面所有请求
 
-与keep-alive相关
-activated(聚焦)
-deactivated(失活,失去焦点)
+keep-alive
+activated(激活)
+deactivated(失活)
 
-报错相关
-errorCaptured
+收集报错
+errorCaptured	->	当子孙组件出现错误才能捕获,自身不行
+
+
+vue.config.errorHandle	->	捕获Vue项目中所有的错误
