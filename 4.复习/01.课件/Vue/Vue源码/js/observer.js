@@ -62,6 +62,7 @@ Observer.prototype = {
         //         return val;
         //     },
         //     set: function(newVal) {
+        //          如果更新的数据和原数据相同,视图不会更新
         //         if (newVal === val) {
         //             return;
         //         }

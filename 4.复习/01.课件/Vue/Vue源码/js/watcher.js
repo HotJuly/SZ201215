@@ -6,6 +6,7 @@
  */
 function Watcher(vm, expOrFn, cb) {
   //this->watcher的实例对象
+  // vm=>组件实例,expOrFn=>"msg",cb=>textUpdater更新器函数
   this.cb = cb;
   this.vm = vm;
   this.expOrFn = expOrFn;
@@ -15,10 +16,11 @@ function Watcher(vm, expOrFn, cb) {
     this.getter = expOrFn;
   } else {
     this.getter = this.parseGetter(expOrFn.trim());
-    // this.getter=function getter(obj) {
-    //   for (var i = 0, len = exps.length; i < len; i++) {
-    //     if (!obj) return;
-    //     obj = obj[exps[i]];
+    // function getter(vm) {
+    //   for (var i = 0, len = ["msg"].length; i < len; i++) {
+    //     if (!vm) return;
+    //     // obj = vm['msg'];
+    //     obj = vm[exps[i]];
     //   }
     //   return obj;
     // };

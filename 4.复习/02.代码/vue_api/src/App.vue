@@ -54,10 +54,20 @@ export default {
       this.num = value;
     }
   },
+  beforeCreate(){
+    console.log('-----------beforeCreate----------',this,this.num,this.$el)
+  },
+  created(){
+    console.log('-----------created----------',this,this.num,this.$data.num,this.$el)
+  },
+  beforeMount(){
+    console.log('-----------beforeMount----------',this,this.num,this.$data.num,this.$el)
+  },
   mounted(){
+    console.log('-----------mounted----------',this,this.num,this.$data.num,this.$el)
     // console.log('children',this.$children)
-    console.log('h1',this.$refs.h1)
-    console.log('HelloWorld',this.$refs.HelloWorld)
+    // console.log('h1',this.$refs.h1)
+    // console.log('HelloWorld',this.$refs.HelloWorld)
   },
   $num:2,
   watch:{

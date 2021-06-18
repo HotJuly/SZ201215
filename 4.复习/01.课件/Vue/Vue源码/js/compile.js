@@ -1,4 +1,5 @@
 function Compile(el, vm) {
+  // el=>"#app",vm
   // 在当前compile实例对象上缓存vm实例,方便后续使用
   this.$vm = vm;
 
@@ -8,7 +9,10 @@ function Compile(el, vm) {
   //判断是否有找到模版节点
   if (this.$el) {
     // 将模版节点中所有的直系子节点移入到文档碎片中,方便后续频繁操作(性能优化)
+    // 宁愿多操作十次js,也不重新渲染一次页面
     this.$fragment = this.node2Fragment(this.$el);
+
+    //此处是beforeMount的执行位置,beforeMount()
 
     //编译文档碎片中所有的节点内容
     //1.解析插值语法
@@ -17,7 +21,12 @@ function Compile(el, vm) {
     this.init();
 
     // 将模版解析结束的文档碎片,插入到页模版节点中
+    // vue1中,是将解析完的真实DOM插入到$el元素中,
+    // vue2中,是将解析完的真实DOM替换掉原先的$el元素
     this.$el.appendChild(this.$fragment);
+    // debugger
+
+    //此处是mounted的执行位置,mounted()
   }
 }
 
@@ -41,13 +50,18 @@ Compile.prototype = {
   compileElement: function (el) {
     // 获取文档碎片中所有的子节点组成的伪数组
     // 顺便缓存compile实例对象在me变量中
+    // childNodes=[p标签对象]
+    // childNodes = [text节点]
     var childNodes = el.childNodes,
       me = this;
 
     //借调数组的slice方法,通过childNodes生成全新的数组(内部进行浅拷贝)
     //遍历当前所有的直系子节点
     [].slice.call(childNodes).forEach(function (node) {
+      // node = >p标签
+      // node = >text节点
       //获取当前节点的文本内容
+      // text=>"{{msg}}"
       var text = node.textContent;
       //用于匹配插值语法
       var reg = /\{\{(.*)\}\}/;
@@ -61,9 +75,11 @@ Compile.prototype = {
         //检测当前节点是否是文本节点,同时内部是否具有插值语法
         //传入两个参数,节点对象,插值语法表达式({{msg}} 获取结果 msg)
         me.compileText(node, RegExp.$1.trim());
+        // me.compileText(text节点, "msg");
       }
 
       if (node.childNodes && node.childNodes.length) {
+        // me.compileElement(p标签);
         me.compileElement(node);
       }
     });
@@ -105,7 +121,9 @@ Compile.prototype = {
   },
 
   compileText: function (node, exp) {
+    // text节点, "msg"
     compileUtil.text(node, this.$vm, exp);
+    // compileUtil.text(text节点, vm, "msg");
   },
 
   isDirective: function (attr) {
@@ -133,7 +151,9 @@ var compileUtil = {
       vm  ->组件实例对象
       exp ->插值语法表达式
     */
+      // text节点, vm, "msg"
     this.bind(node, vm, exp, "text");
+    // this.bind(text节点, vm, "msg", "text");
   },
   html: function (node, vm, exp) {
     this.bind(node, vm, exp, "html");
@@ -158,17 +178,26 @@ var compileUtil = {
   },
 
   bind: function (node, vm, exp, dir) {
+    // text节点, vm, "msg", "text"
     // 通过dir参数,找到对应的更新器函数
     //如果是插值语法,会找到textUpdater,专门用于更新文本节点
     var updaterFn = updater[dir + "Updater"];
+    // var updaterFn = updater["textUpdater"];
 
     //如果具有对应的更新器,就调用这个更新器(传入两个参数,需要修改的节点对象,即将更新的文本内容(data中的数据))
     updaterFn && updaterFn(node, this._getVMVal(vm, exp));
+    // updaterFn && updaterFn(text节点, "hello MVVM");
+    // debugger
 
     //只要通过插值语法或者指令去获取data中属性的值,一次就会生成一个watcher实例
+    // 每个指令和插值语法都会生成一个watcher实例
     new Watcher(vm, exp, function (value, oldValue) {
       updaterFn && updaterFn(node, value, oldValue);
     });
+
+    // new Watcher(vm, "msg", function (value, oldValue) {
+    //   updaterFn && updaterFn(text节点, value, oldValue);
+    // });
   },
 
   eventHandler: function (node, vm, exp, dir) {
@@ -212,9 +241,9 @@ var compileUtil = {
 
 var updater = {
   textUpdater: function (node, value) {
-    debugger
+    // debugger
     node.textContent = typeof value == "undefined" ? "" : value;
-    debugger
+    // debugger
   },
 
   htmlUpdater: function (node, value) {

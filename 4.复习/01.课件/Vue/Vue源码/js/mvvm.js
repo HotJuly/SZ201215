@@ -1,5 +1,7 @@
 function MVVM(options) {
   this.$options = options || {};
+  // 此处是beforeCreate的执行位置,beforeCreate()
+
   var data = this._data = this.$options.data;
   // var data = (this._data = this.$options.data);
   // vm._data = vm.$options.data;
@@ -34,11 +36,14 @@ function MVVM(options) {
   */
   observe(data, this);
 
+  // 此处是created的执行位置,created()
+
   //03.模版解析
   // 1.每个插值语法或者指令(每个DOM节点)都会生成对应的watcher对象
         // 每个watcher上都有depIds属性,会存放当前watcher用到的所有的dep(响应式属性)
   //  2.当dep触发notify方法的时候,可以更新每个watcher对应的节点(调用watcher身上的update方法)
   //通过dep和watcher之间的关系,可以精准的通知更新到每个相关节点
+  // 注意,dep和watcher在首次渲染中没有任何作用,他们的作用是为了实现响应式效果存在的
   this.$compile = new Compile(options.el || document.body, this);
 }
 
