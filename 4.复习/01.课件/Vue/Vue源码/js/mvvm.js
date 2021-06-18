@@ -1,18 +1,26 @@
 function MVVM(options) {
   this.$options = options || {};
   var data = this._data = this.$options.data;
+  // var data = (this._data = this.$options.data);
+  // vm._data = vm.$options.data;
+  // var data = vm.$options.data;
   var me = this;
 
 
   // 01.数据代理
+  // 做法:将所有的data中的直系属性(!!!!)代理到this身上
+  // 目的:为了方便通过this直接获取到$data中的响应式数据
+  // this.c.d =>this.$data.c.d
   Object.keys(data).forEach(function (key) {
     me._proxyData(key);
+    // vm._proxyData("msg");
   });
 
   this._initComputed();
 
   // 响应式的思路
-  //1.如何监视数据变化
+  // 需求:当data数据发生变化的时候,要重新渲染页面
+  //1.如何监视数据变化(通过重写_data中的所有属性,将其变为set方法,可以监视用户是否修改状态数据)
   // 2.如何更新对应视图
 
   //02.数据劫持
@@ -20,6 +28,10 @@ function MVVM(options) {
   // 2.对data每个响应式属性都生成了对应的dep对象
   //    每个dep对象都有subs数组,内部存放与他相关的所有watcher
   // 3.当用户更新数据之后,通知watcher更新视图
+  /*数据劫持的时机:
+      1.组件初始化的时候,new Vue的时候
+      2.当你更新一个响应式属性的值的时候,会立马深度劫持最新的值
+  */
   observe(data, this);
 
   //03.模版解析
@@ -36,6 +48,7 @@ MVVM.prototype = {
     new Watcher(this, key, cb);
   },
   _proxyData: function (key, setter, getter) {
+    // key = "msg"
     var me = this;
     setter =
       setter ||
@@ -50,6 +63,18 @@ MVVM.prototype = {
           me._data[key] = newVal;
         },
       });
+      
+      // Object.defineProperty(vm, "msg", {
+      //   configurable: false,
+      //   enumerable: true,
+      //   get: function proxyGetter() {
+      //     return vm._data["msg"];
+      //   },
+      //   set: function proxySetter(newVal) {
+      //     // vm._data.msg = newVal;
+      //     me._data[key] = newVal;
+      //   },
+      // });
   },
 
   _initComputed: function () {
