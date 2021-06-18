@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            Vue2通过Object.defineProperty重新定义_data上的属性,将其定义为访问描述符(具有getter/setter)
+            所以,它可以监视到修改该属性的值的操作
+            但是,无法监视新增和删除
+
+            Vue3通过Proxy监视用户的操作
+                存在两个角色:
+                        1.原数据对象
+                        2.代理对象
+                Reflect用于对原数据对象进行多种操作
+        */
+    //    function A(){
+
+    //    }
+    //     A()
+    //    new a();
+
+        var obj ={
+            name:"xiaoming",
+            age:28
+        }
+        var proxyObj = new Proxy(obj,{
+            set(target,prop,newVal){
+                console.log('set',target,prop,newVal)
+                // target[prop]=newVal
+                Reflect.set(target, prop, newVal)
+                // dep.notify();
+            },
+            get(target,prop){
+                console.log('get')
+                // return target[prop]
+                return Reflect.get(target, prop)
+            },
+            deleteProperty(target,prop){
+                console.log('deleteProperty',target,prop)
+                // delete target[prop]
+                Reflect.deleteProperty(target, prop)
+            },
+            defineProperty(target,prop,val){
+                console.log('defineProperty',target,prop,val)
+            }
+        })
+        // console.log(proxyObj.name,proxyObj.age)
+        // proxyObj.name="laowang"
+        // delete proxyObj.name
+        // proxyObj.sex="男"
+        console.log(obj,proxyObj.name)
+    </script>
+</body>
+</html>

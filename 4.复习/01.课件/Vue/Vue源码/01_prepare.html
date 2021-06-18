@@ -25,96 +25,180 @@
       -->
 
     <script type="text/javascript">
-      /*
-        1. [].slice.call(lis): 将伪数组转换为真数组
-      */
-      const arr1 = [1, 2, 3, 4];
-      // 内部通过this找到要复制的数组
-      console.log(arr1.slice(0, 3));
 
-      // 伪数组
-      const lis = document.querySelectorAll("li");
-      console.log(lis);
+    // var obj ={
+    //   "0":123,
+    //   1:666
+    // }
 
-      // ES5：将伪数组转换为真数组
-      console.log([].slice.call(lis));
-      console.log(Array.prototype.slice.call(lis));
-      // console.log(lis.slice()); // lis上面没有slice方法
+    // function A(){
+    //   var arg=[].slice.call(arguments);
+    //   console.log(arg)
+    //   this.a="1215"
+    // }
+    // var a = new A(1,2,3);
+// 1. [].slice.call(lis): 将伪数组转换为真数组
+//查找原型对象的方法:Array.prototype === [].__proto__ 
+// prototype  构造函数才拥有的属性  Array.prototype.slice
+// __proto__  实例对象才拥有的属性  [].__proto__.slice
+// [].__proto__.slice.call(this指向,开始下标,结束下标)
+// [].__proto__.slice.apply(this指向,[开始下标,结束下标])
 
-      // ES6：将伪数组转换为真数组
-      console.log(Array.from(lis));
+// 面试题:call和apply的区别
+// 相同点:都可以修改借调函数中的this指向
+// 不同点:
+//    call:向借调函数内部传入实参,需要分别传入给call
+//    apply:向借调函数内部传入实参,一次性通过数组传递给apply
 
-      /*
-       node.nodeType 代表节点的类型
-        1 元素节点
-        3 文本节点
-      */
-      console.log(lis[0].nodeType); // 1
-      console.log(lis[0].firstChild.nodeType); // 3
+/* 面试题:什么是伪数组
+      1.以下标存储数据
+      2.具有length属性
+      3.无法使用数组的方法
+      举例:
+        1.arguments
+        2.document.getElementsByClassName
+        3.document.querySelectorAll
 
-      // 3. Object.defineProperty(obj, propertyName, {}): 给对象添加属性(指定描述符)
+*/
 
-      const person = {
-        firstName: "jack",
-        lastName: "ma",
+// 根据旧数组,生成新数组,并浅拷贝内部的内容
+// 浅拷贝:将当前数组内部所有的数据复制一份(如果内容是引用数据类型,复制的是地址值)
+// var arr =[1,2,{}];
+// console.log(arr.slice(0,3),arr);
+
+
+// console.dir(test)
+
+
+
+
+
+//       2. node.nodeType: 得到节点类型
+/*  
+      1 元素节点
+      2 属性节点
+      3 文本节点
+      11 文档碎片节点
+
+*/
+
+
+
+
+
+
+//       3. Object.defineProperty(obj, propertyName, {}): 给对象添加属性(指定描述符)
+/*
+var obj={
+      name:"xiaoming"
       };
 
-      Object.defineProperty(person, "fullName", {
-        configurable: false, // 是否可以重新配置/删除
-        enumerable: true, // 是否可以被for in遍历
-        get() {
-          return this.firstName + " " + this.lastName;
-        },
-        set(val) {
-          const [firstName, lastName] = val.split(" ");
-          this.firstName = firstName;
-          this.lastName = lastName;
-        },
-      });
+var obj={};
 
-      console.log(person);
+// 元属性,属性描述符
+Object.defineProperty(obj,"_name",{
+  configurable:false,//是否允许之后再次修改该属性的配置
+  enumerable:true,//for...in  是否可以枚举
+  writable:true,//是否只读
+  value:"xiaoming"
+})
+//访问描述符,具有getter和setter方法的属性
+Object.defineProperty(obj,"name",{
+  configurable:false,//是否允许之后再次修改该属性的配置
+  enumerable:true,//for...in  是否可以枚举
+  // writable:true,//是否只读
+  get:function(){
+    return obj._name
+  },
+  set:function(value){
+    // console.log(value)
+    obj._name=value;
+  }
+  // get(){}
 
-      // 得到对象自身可枚举属性组成的数组
-      console.log(Object.keys(person));
-      console.log(Object.values(person));
+})
+console.log(obj.name)
+obj.name="xiaowang"
+console.log(obj)
 
-      // 5. obj.hasOwnProperty(prop): 判断prop是否是obj自身的属性
+*/
 
-      const obj = { a: 1 };
-      obj.__proto__.b = 2;
 
-      // for in 默认会遍历原型上的属性
-      for (const key in obj) {
-        if (obj.hasOwnProperty(key)) {
-          console.log(key);
-        }
-      }
+// var obj={};
 
-      // 6. DocumentFragment: 文档碎片(高效批量更新多个节点)
-      const demo = document.getElementById("demo");
+// // 元属性,属性描述符
+// Object.defineProperty(obj,"_name",{
+//   configurable:false,//是否允许之后再次修改该属性的配置
+//   enumerable:true,//for...in  是否可以枚举
+//   writable:true,//是否只读
+//   value:"xiaoming"
+// })
+// //访问描述符,具有getter和setter方法的属性
+// Object.defineProperty(obj,"name",{
+//   configurable:false,//是否允许之后再次修改该属性的配置
+//   enumerable:false,//for...in  是否可以枚举
+//   // writable:true,//是否只读
+//   get:function(){
+//     return obj._name
+//   },
+//   set:function(value){
+//     // console.log(value)
+//     obj._name=value;
+//   }
+//   // get(){}
 
-      // 创建文档碎片（存储DOM元素容器）
-      const fragment = document.createDocumentFragment();
+// })
+// console.log(Object.keys(obj))
+// console.log(Object.values(obj))
 
-      // let child = demo.firstChild;
-      let child;
-      // 每次先执行 child = demo.firstChild
-      // 然后在判断 child 有没有值
-      while ((child = demo.firstChild)) {
-        fragment.appendChild(child);
-      }
-      // 找到li
-      const list = fragment.children[0].children;
-      // 变成真数组
-      const arr = [].slice.call(list);
 
-      arr.forEach((li) => {
-        // 这里DOM操作是在fragment中操作
-        // 是在内存中操作
-        li.textContent = "hello " + li.textContent;
-      });
 
-      demo.appendChild(fragment);
+
+//       4. Object.keys(obj): 得到对象自身可枚举属性组成的数组
+/*
+Object.values(obj)
+*/
+
+
+
+
+
+//       5. obj.hasOwnProperty(prop): 判断prop是否是obj自身的属性
+//   var arr = [1,2,3];
+//   console.log(arr.hasOwnProperty("length"))
+//   console.log(arr.hasOwnProperty("push"))
+//   console.log("push" in arr)
+// // 面试题:关键字in和hasOwnProperty的区别
+// // in会顺着原型链往上找,hasOwnProperty只会查找自身
+
+// // 需求:打印当前对象身上所有的属性
+// Array.prototype.c = 6;
+// for(key in arr){
+//   if(arr.hasOwnProperty(key)){
+//     console.log(key)
+//   }
+// }
+
+
+
+
+//       6. DocumentFragment: 文档碎片(高效批量更新多个节点)
+var fragment = document.createDocumentFragment();
+// console.dir(fragment)
+var test = document.querySelector('#test');
+// fragment.appendChild(test)
+var nodeList = [].slice.call(document.body.childNodes);
+nodeList.forEach(function(item,index){
+  // console.log(item,index)
+  fragment.appendChild(item)
+})
+
+
+// console.dir(document.body.childNodes)
+
+
+//7.js中6个false值
+// false 0 NaN "" undefined null
     </script>
   </body>
 </html>

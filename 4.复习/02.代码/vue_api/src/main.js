@@ -30,6 +30,21 @@ Vue.mixin({
   }
 })
 
+// let helloComponent = Vue.extend({
+//   template:"<h1>helloComponent:{{a}}</h1>",
+//   data(){
+//     return{
+//       a:"world66666666666"
+//     }
+//   }
+// })
+
+// let helloInstance = new helloComponent();
+// console.log('helloInstance',helloInstance)
+// helloInstance.$mount();
+// console.log('helloInstance2',helloInstance)
+// document.body.appendChild(helloInstance.$el);
+
 new Vue({
   // template:"<div>app</div>",
   // el:"#app",

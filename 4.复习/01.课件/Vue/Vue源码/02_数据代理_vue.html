@@ -10,21 +10,21 @@
     </div>
     <script src="./js/vue.js"></script>
     <script>
-      /*
-        数据代理:
-          会将data中的属性代理到实例对象vm上
-          作用：方便我们操作data数据
-      */
       const vm = new Vue({
         el: "#app",
         data: {
           msg: "hello vue",
         },
       });
-
-      console.log(vm.msg);
-
-      console.log(vm._data.msg);
+      // debugger
+      setTimeout(()=>{
+        vm.msg="201215 666"
+      },2000)
+      // var obj={
+      //   name:"xiaoming"
+      // };
+      // obj.name="xiaohong";
+      // console.log(obj.name)
     </script>
   </body>
 </html>

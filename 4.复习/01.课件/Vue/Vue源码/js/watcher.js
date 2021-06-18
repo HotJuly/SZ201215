@@ -1,32 +1,29 @@
+/**
+ * 
+ * @param {*} vm 组件实例对象
+ * @param {*} expOrFn  用于解析的表达式或者函数
+ * @param {*} cb 回调函数,如果执行该函数可以更新对应的节点
+ */
 function Watcher(vm, expOrFn, cb) {
-  // 更新用户界面的函数
-  //this->watcher实例对象
+  //this->watcher的实例对象
   this.cb = cb;
   this.vm = vm;
   this.expOrFn = expOrFn;
-  // 保存dep的容器
   this.depIds = {};
 
   if (typeof expOrFn === "function") {
     this.getter = expOrFn;
   } else {
     this.getter = this.parseGetter(expOrFn.trim());
-    // this.getter = function getter(obj) {
-      // obj->vm this->vm
+    // this.getter=function getter(obj) {
     //   for (var i = 0, len = exps.length; i < len; i++) {
     //     if (!obj) return;
-    //     // 读取属性 --> 触发数据代理的get --> 触发数据劫持的get
-    //     // obj = vm["msg"];->vm.msg->触发数据代理->return vm._data.msg
-    //     // vm._data.msg->触发数据劫持
     //     obj = obj[exps[i]];
-    //     obj = vm["msg"];
     //   }
     //   return obj;
     // };
   }
 
-  // 得到当前表达式的值，存在this.value(代表上一次的值)
-  // 建立dep和watcher之间的关系
   this.value = this.get();
 }
 
@@ -36,15 +33,13 @@ Watcher.prototype = {
     this.run();
   },
   run: function () {
-    // 得到当前表达式的值，存在this.value(代表上一次的值)
-    // 建立dep和watcher之间的关系（如果已经建立了，就不会了）
-    var value = this.get();//var value = "hello world"
-    // 上一次表达式的值
-    var oldVal = this.value;//this.value="hello MVVM"
+    // var value = 'hello mvvm~~~~';
+    var value = this.get();
+    // var oldVal = 'hello mvvm';
+    var oldVal = this.value;
     if (value !== oldVal) {
-      // 更新值
+      //保留当前最新值,留作下次使用
       this.value = value;
-      // 更新用户界面
       this.cb.call(this.vm, value, oldVal);
     }
   },
@@ -64,44 +59,39 @@ Watcher.prototype = {
     // 触发了addDep(), 在整个forEach过程，当前wacher都会加入到每个父级过程属性的dep
     // 例如：当前watcher的是'child.child.name', 那么child, child.child, child.child.name这三个属性的dep都会加入当前watcher
 
-    // 判断watcher中有没有保存过dep，没有保存才执行
+
+    //判断当前watcher实例中depIds对象上有没有与dep的id相同的key
     if (!this.depIds.hasOwnProperty(dep.id)) {
-      // 在dep中保存watcher
-      // 有什么用？将来数据发生变化，能通过dep找到所有watcher从而更新
+      //没有相同的key,进入
+      // dep.addSub(watcher);
       dep.addSub(this);
-      // 在watcher中保存dep
-      // 有什么用？ 防止dep重复保存watcher
-      //{ 1:dep}
+
+      //在depIds中添加dep对象,属性名是dep的id,属性值是dep对象
       this.depIds[dep.id] = dep;
     }
   },
   get: function () {
-    // 将Dep.target赋值为当前watcher
-    Dep.target = this;
+    //this->watcher的实例对象
     // Dep.target = watcher;
+    Dep.target = this;
+    // 返回当前最新值
     var value = this.getter.call(this.vm, this.vm);
     Dep.target = null;
     return value;
   },
 
   parseGetter: function (exp) {
-    // [^\w.$]->[^a-zA-Z0-9_.$]->匹配特殊字符+ - *
-    // "msg"
+    //exp=>msg  "+msg"
+    // 目的:用于过滤特殊字符
     if (/[^\w.$]/.test(exp)) return;
-    // exp person.name
-    // exps ['person', 'name']
-    //exp msg->["msg"]
+
+    //exps=>['msg']
     var exps = exp.split(".");
 
-    // 就是this.getter
-    // 类似于 this._getVMVal() 得到表达式的值
     return function getter(obj) {
-      // obj->vm this->vm
       for (var i = 0, len = exps.length; i < len; i++) {
         if (!obj) return;
-        // 读取属性 --> 触发数据代理的get --> 触发数据劫持的get
-        // obj = vm["msg"];->vm.msg->触发数据代理->return vm._data.msg
-        // vm._data.msg->触发数据劫持
+        // obj = vm['msg'];
         obj = obj[exps[i]];
       }
       return obj;

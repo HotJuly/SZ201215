@@ -6,25 +6,39 @@
   </head>
   <body>
     <div id="app">
-      <button v-on:click="handleClick">按钮</button>
+      <button class="A" v-on:click="handleClick">按钮</button>
     </div>
     <script src="./js/observer.js"></script>
     <script src="./js/watcher.js"></script>
     <script src="./js/compile.js"></script>
     <script src="./js/mvvm.js"></script>
     <script>
+      debugger
       new MVVM({
-        // el: "#app",
-        el: document.getElementById("app"),
+        el: "#app",
         data: {},
         methods: {
           handleClick(e) {
-            // 普通DOM事件，指向被绑定的DOM元素
-            // 在vue中 所有事件回调函数的this指向实例对象vm
             console.log(e);
+            this.msg++;
           },
         },
       });
+
+      // var obj = {
+      //   name:"laowang"
+      // }
+      // function A(){
+      //   console.log(this);
+      // }
+      // A();
+      // A.call(obj)
+      // A();
+      // var B = A.bind(obj);
+      // B();
+      // B();
+      // B();
+      // B();
     </script>
   </body>
 </html>

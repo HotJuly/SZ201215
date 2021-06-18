@@ -1,8 +1,12 @@
 <template>
   <div class="hello">
-    <h1 v-for="item in a" @click="change(item)">{{ item }}</h1>
+    <!-- <h1 v-for="item in a" @click="change(item)">{{ item }}</h1> -->
     <!-- <h2>{{inject}}</h2> -->
-    <input type="text" :value="value" @input="handleInput">
+    <!-- <input type="text" :value="value" @input="handleInput"> -->
+    <!-- <A {...$attrs} msg="haha"/> -->
+    <!-- <button>{{msg}}</button>
+    <button @click="changeMsg">修改</button> -->
+    <slot name="footer" :slotName="slotName"></slot>
   </div>
 </template>
 
@@ -17,7 +21,8 @@ export default {
   ],
   data(){
     return  {
-      a:[1,2,3]
+      a:[1,2,3],
+      slotName:"footer"
     }
   },
   inject:["ccc"],
@@ -31,6 +36,9 @@ export default {
     handleInput(event){
       // this.value=event.target.value;
       this.$emit('input6666666',event.target.value)
+    },
+    changeMsg(){
+      this.$emit('update:msg',6)
     }
   },
   model:{
@@ -38,8 +46,21 @@ export default {
     prop:'num'
   },
   mounted(){
+    // this.$destroy();
+    // this.$refs.h1.addEventListener('click',function(){
+
+    // })
+    // console.log('msg',this.$attrs)
+    // console.log('listeners',this.$listeners)
+    // console.log('data',this.$data)
+    // console.log('props',this.$props)
+    // console.log('$el',this.$el)
+    // setTimeout(()=>{
+    //   this.$parent.$data.num = 8;
+    //   console.log('$parent',this.$parent.$data.num)
+    // },2000)
     // console.log(this.ccc)
-    console.log('num',this.num)
+    // console.log('num',this.num)
     // console.log('$num',this.$options.$num)
     // console.log(c)
     // 更新DOM的操作在微任务中,更新的函数会放在nextTick里执行

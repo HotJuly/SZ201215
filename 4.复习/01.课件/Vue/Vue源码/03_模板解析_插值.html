@@ -6,8 +6,10 @@
   </head>
   <body>
     <div id="app">
-      <p id="a222" value="haha" v-on:click="handle">{{ person.name }}</p>
-      <span v-text="msg"></span>
+      <div>{{msg + person.name}}</div>
+      <div>{{person.name}}
+        <p>123</p>
+      </div>
     </div>
     <script src="./js/observer.js"></script>
     <script src="./js/watcher.js"></script>
@@ -15,36 +17,54 @@
     <script src="./js/mvvm.js"></script>
     <script>
       /*
-        模板解析-插值语法
-          1. 将元素节点转换成文档碎片节点
-            遍历el元素所有子节点，添加到fragment中
-          2. 解析模板
-            遍历fragment中所有子节点，
-              判断是否是文本节点（nodeType == 3）并且里面文本内容是否有插值语法
-              如果都满足，就进行插值语法解析（普通文本不用解析）
-              插值语法解析：  
-                通过正则取出插值语法中表达式，然后去this上获取对应表达式的值
-                然后给node设置textContent属性，值为表达式的值（此时插值语法就解析完毕了）
-              如果当前节点还有子节点，继续递归编译~
-          3. 将模板解析后的文档碎片节点添加到el容器中生效
+        模版解析之插值语法替换
+          1.判断options中的el是否是DOM节点,如果是就保留,不是就通过querySelector查找当前DOM节点
+          2.如果找到DOM节点
+            1)将这个DOM节点中所有的直系子节点移入文档碎片中(后代节点会因为直系子节点移动而移动)
+              注意:为什么不直接在document中解析,而是移动到文档碎片中
+              回答:当节点移动到文档碎片中,节点会从document中消失
+                  在文档碎片中,对DOM节点进行任意次数的修改,都不会影响到页面渲染
+            2)借调数组的slice方法,通过childNodes生成全新的数组(内部进行浅拷贝),并遍历当前所有的直系子节点
+              -检测当前节点是否是元素节点
+                1.获取当前节点中所有的标签属性节点,并遍历当前标签属性节点
+                2.判断当前标签属性节点是否是指令,例如class就不是,v-on:click就是
+                  -判断当前标签属性节点是否是事件指令,调用事件指令的专属函数,并准备好所需参数
+                    如果所有要素都具备,给当前节点绑定原生DOM事件
+                  -如果不是事件指令,就说明当前指令是一般指令
+                    触发bind方法,通过形参dir的值,找到对应的更新器函数
+                      (例如:v-class找到的就是compileUtil['class'],classUpdater)
+                    将节点和需要使用的data数据,传给更新器函数,并更新className
+                3.删除所有指令
+              -检测当前节点是否是文本节点,同时内部是否具有插值语法
+                触发bind方法,通过形参dir的值,找到对应的更新器函数(textUpdater)
+                将节点和需要显示的data数据,传给更新器函数,并更新textContent(innerText)
+              -检测当前节点是否还具有子节点
+                如果有子节点回到2)(无限递归,直到最深层次)
       */
 
-      var vm=new MVVM({
-        // el: "#app",
-        el: document.getElementById("app"),
-        data: {
-          msg: "hello MVVM",
-          person: {
-            name: "jack",
-          },
-        },
-        methods:{
-          handle(){
-            console.log('handle')
-          }
-        }
-      });
-      vm.msg="hello world"
+      // debugger
+      // var vm=new MVVM({
+      //   el: "#app",
+      //   data: {
+      //     msg: "hello MVVM",
+      //     person: {
+      //       name: "jack",
+      //     }
+      //   }
+      // });
+      // var obj ={
+      //   msg:"hello obj"
+      // }
+      // debugger
+      // vm.msg="hello world"
+      //   var oldTime = Date.now();
+      //   var b=2;
+      // for(var i=0;i<100000;i++){
+      //     // b=b**10;
+      //     console.log(i)
+      // }
+      //   var newTime = Date.now();
+      //   console.log(newTime-oldTime)
     </script>
   </body>
 </html>

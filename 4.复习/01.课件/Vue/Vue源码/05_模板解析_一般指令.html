@@ -11,8 +11,8 @@
   </head>
   <body>
     <div id="app">
-      <p v-text="msg"></p>
-      <p v-html="msg"></p>
+      <p v-text="msg">{{className}}</p>
+      <!-- <p v-html="msg"></p> -->
       <p v-class="className" class="green">hello mvvm</p>
     </div>
     <script src="./js/observer.js"></script>
@@ -21,8 +21,7 @@
     <script src="./js/mvvm.js"></script>
     <script>
       new MVVM({
-        // el: "#app",
-        el: document.getElementById("app"),
+        el: "#app",
         data: {
           msg: "<span>hello mvvm</span>",
           className: "red",

@@ -1,111 +1,55 @@
-/**
- * 构造函数，相当于vue
- * @param {*} options 配置对象
- */
 function MVVM(options) {
-  /*
-    options={
-        el: "#app",
-        data: {
-          msg: "hello MVVM",
-        },
-      }
-  
-  */
- //当前this是mvvm的实例对象vm
-  // 给实例对象vm添加$options，值是配置对象
   this.$options = options || {};
-  // 给实例对象vm添加_data（原数据），值就是配置对象中data数据
-  // 定义变量data，值就是配置对象中data数据
   var data = this._data = this.$options.data;
-
-  // 注意,当目前为止,有三个位置保存data对象的地址值
-  // var data = (this._data = this.$options.data);
-
-  // var data = (this._data = this.$options.data);
-  // 缓存this，为了后面函数可以使用
   var me = this;
 
 
-  // beforeCreate在这里执行
-
-  // 重点一:数据代理：将data中数据代理到this上
-  // 遍历data数据提取所有key，对其数据代理
-  //经过这一步之后,this.msg就可以使用,将_data中的数据代理到this身上
+  // 01.数据代理
   Object.keys(data).forEach(function (key) {
-    // 数据代理的方法
     me._proxyData(key);
   });
 
-  // ["msg"].forEach(function (key) {
-  //   // 数据代理的方法
-  //   vm._proxyData("msg");
-  // });
-
-
-  // 代理计算属性
   this._initComputed();
 
-  //重点二: 数据劫持（数据绑定）：将data数据（_data, 原数据）重新定义，定义成响应式
+  // 响应式的思路
+  //1.如何监视数据变化
+  // 2.如何更新对应视图
+
+  //02.数据劫持
+  // 1.监视数据的变化->通过重新定义data中所有的属性(通过访问描述符的set方法可以监视数据的变化)
+  // 2.对data每个响应式属性都生成了对应的dep对象
+  //    每个dep对象都有subs数组,内部存放与他相关的所有watcher
+  // 3.当用户更新数据之后,通知watcher更新视图
   observe(data, this);
-  // observe(data, vm);
 
-  // created结束
-
-  // beforeMount结束
-
-  // 重点三: 模板解析：
-  // 1. 将插值语法/指令语法解析
-  // 2. new Watcher建立dep和watcher建立联系，才能变成响应式
-  // vue1如果没传入el属性,默认是选中body,并渲染上去
-  // vue2如果没传入el属性,同时$mount()中也没有传递挂载DOM,当前组件不会渲染
+  //03.模版解析
+  // 1.每个插值语法或者指令(每个DOM节点)都会生成对应的watcher对象
+        // 每个watcher上都有depIds属性,会存放当前watcher用到的所有的dep(响应式属性)
+  //  2.当dep触发notify方法的时候,可以更新每个watcher对应的节点(调用watcher身上的update方法)
+  //通过dep和watcher之间的关系,可以精准的通知更新到每个相关节点
   this.$compile = new Compile(options.el || document.body, this);
-  // this.$compile = new Compile("#app" || document.body, vm);
 }
 
-// 构造函数的原型对象
 MVVM.prototype = {
   constructor: MVVM,
   $watch: function (key, cb, options) {
     new Watcher(this, key, cb);
   },
-  // 数据代理的方法：将data数据代理到vm上
   _proxyData: function (key, setter, getter) {
-    // key=>"msg"
-    // vm._proxyData(key) 所以_proxyData的this指向vm
     var me = this;
     setter =
       setter ||
-      // 将data数据代理到vm上
       Object.defineProperty(me, key, {
-        configurable: false, // 不能重新配置和删除 
-        enumerable: true, // 可以被枚举
+        configurable: false,
+        enumerable: true,
         get: function proxyGetter() {
-          // 代理属性的读方法
-          // 实际上返回是原数据的值
-          // return vm._data.msg
           return me._data[key];
         },
         set: function proxySetter(newVal) {
-          // 代理属性的写方法
-          // 实际上更新原数据的值
+          // vm._data.msg = newVal;
           me._data[key] = newVal;
         },
       });
-      // Object.defineProperty(vm, "msg", {
-      //   configurable: false, // 不能重新配置和删除 
-      //   enumerable: true, // 可以被枚举
-      //   get: function proxyGetter() {
-      //     // 代理属性的读方法
-      //     // 实际上返回是原数据的值
-      //     return vm._data["msg"];
-      //   },
-      //   set: function proxySetter(newVal) {
-      //     // 代理属性的写方法
-      //     // 实际上更新原数据的值
-      //     vm._data["msg"] = newVal;
-      //   },
-      // })
   },
 
   _initComputed: function () {

@@ -3,16 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <title>06_数据劫持-数据绑定</title>
-    <!--
-    1. 数据绑定
-      * 初始化显示: 页面(表达式/指令)能从data读取数据显示 (编译/解析)
-      * 更新显示: 更新data中的属性数据==>页面更新
-  --></head>
+  </head>
   <body>
     <div id="app">
       <p>{{person.name}}</p>
       <p v-html="msg"></p>
       <p>{{msg}}</p>
+      <p>{{person.age}}</p>
+      <p>{{person}}</p>
       <button v-on:click="handleClick">按钮</button>
     </div>
     <script src="./js/observer.js"></script>
@@ -21,39 +19,126 @@
     <script src="./js/mvvm.js"></script>
     <script>
       /*
-        响应式原理：
-          1. 数据代理 --> 将data原数据代理的this
-            通过this访问数据，实际上操作是data原数据
-          2. 数据劫持 --> 重新定义data原数据，将其定义成响应式
-            遍历data中所有数据（如果是对象，还要递归遍历）
-            将其定义成响应式数据（每一个响应式数据都会生成dep）
-          3. 模板解析
-            元素节点 --> 解析指令语法
-              事件指令 --> 绑定事件监听
-              一般指令 --> 更新DOM，new Watcher（更新DOM的方法）
-                new Watcher就会建立dep和watcher联系
-                  你中有我，我中有你（watcher保存dep，dep保存watcher）
-          4. 将来更新this上响应式数据
-            触发数据的代理的set --> 触发数据劫持set --> 
-              更新数据
-              dep方法通知所有watcher来更新用户界面        
+
+        数据劫持执行时机:
+          1.组件初始化的时候(生命周期中的初始化)
+          2.当用户修改响应式属性的时候
+
+        总结:
+          1.如果更新的数据与原先数据相同,视图不会更新
+          2.数据劫持是深度劫持,所有的属性都会被劫持
+          3.数据劫持只能监视修改已有响应式属性,删除或者新增属性都不是响应式
+            解决方案:
+              1.新增 Vue.set -> vm.$set
+              2.删除 Vue.delete -> vm.$delete
+          
+        注意:
+          1.数组从技术来说,是可以被数据劫持的,但是Vue没有这么做
+            数组下标没有被劫持,但是内部如果是对象,对象的所有属性还是会被深度劫持
+            原因:因为Vue官方认为一般放在数组中的数据,都是大体量数据,一般都用于展示
+          2.Vue中,数组的多个操作数组内容的方法都被重写了
+            pop,push,splice,unshift,shift....
+            内部:原先功能还有保留,同时内部肯定有通知视图更新功能
+
+        响应式:当data中的数据发生变化时,项目会自动更新页面显示内容
+        分析需求:
+            1.如何知道data中的数据是否发生了变化
+              通过Object.defineProperty重新定义_data中的属性,将他变成getter和setter方法
+            2.如何通过js更新页面显示内容
+              拆解需求:
+                1)如何知道要更新的是哪些节点
+                2)如何知道要显示的最新内容是什么
+        响应式流程:
+          1.准备阶段
+            1)数据劫持
+              _data中,每个属性名都会被重新定义,变成响应式属性
+              在此过程中,每个响应式属性都会有一个对应dep(每个dep都有唯一id)
+            
+            2)模版解析
+              解析模版的过程中,如果遇到插值语法或者指令(就是有可能使用到_data中的响应式属性的时候),会自动调用bind方法
+              bind方法的用处:
+                1.找到对应语法的更新器
+                2.执行该更新器,更新节点(首次渲染)
+                3.创建一个与当前语法对应的watcher对象
+                  注意点:
+                    - 缓存回调函数,该回调函数内部会执行步骤2
+                    - 回调函数内部会通过闭包缓存使用当前语法的对应节点node
+                    - 每个watcher身上都有一个depIds对象(该对象用于收集当前语法使用到的响应式属性对应的dep)
+                    - 每个watcher身上都有一个getter方法,通过该方法,可以得到当前使用的响应式属性的最新数据
+                    - 每个watcher身上都有一个value属性,用来缓存当前显示的值
+                      再次期间会触发原型对象身上的get方法
+                      !!!!!!!!!!!!!!!!!!!!!!!!!
+                      1)将构造函数Dep身上的target属性赋值,数据是当前的watch实例对象
+                      2)调用watcher身上的getter方法,获取到当前最新数据
+                        注意:其实获取当前最新数据不是目的,主要目的是实现dep和wacther的映射关系
+                        流程:
+                          1)通过数据代理,触发响应式属性的数据劫持中的get方法
+                          2)get方法中,第一步判断Dep.target是否有值,当前有值,值是watcher实例对象
+                          3)执行判断语句内部的dep.depend(),内部执行Dep.target.addDep(dep)(当前的Dep.target是watcher实例)
+                          4)watcher.addDep(dep)中,首先判断当前watcher的depIds对象中是否已经保存了当前的dep
+                            -如果没有,将当前的dep添加到depIds对象中(到这一步,watcher就收集了与他相关的所有dep)
+                            -执行dep.addSub(watcher实例),(用于dep去收集相关watcher)
+                          5)dep.addSub(watcher实例)中,dep通过自身的subs数组收集所有相关watcher
+
+          2.更新阶段
+            1)触发数据代理的set方法
+            2)触发数据劫持的set方法
+              - 如果当前新数据和旧数据相同,无事发生
+              - 如果当前新数据是个对象,会进行深度劫持(隐式递归)
+              - 找到当前响应式属性对应的dep(之前使用闭包缓存下来了),调用dep.notify()
+            3)dep.notify方法中,遍历dep身上的subs数组,调用数组内部所有watcher的update方法用于更新视图
+            4)watcher.update()方法中,通过get方法获取到当前最新数据,并与旧数据进行对比
+              - 如果两个数据不相同,执行之前保留的回调函数(内部会自动执行更新器函数),更新视图
+      
       */
-      new MVVM({
-        // el: "#app",
-        el: document.getElementById("app"),
+      let vm  = new MVVM({
+        el: "#app",
         data: {
           msg: "hello mvvm",
           person: {
             name: "jack",
-          },
+          }
         },
         methods: {
           handleClick() {
-            // 当用户更新数据 --> 触发数据代理set --> 触发数据劫持的set
+            console.log('handleClick')
             this.msg += "~~~~";
+            console.log(this.msg,this._data.msg)
           },
         },
       });
+      // delete vm.person.name
+      // vm.person=666
+      // console.log(vm.person)
+      // vm.person.age="777";
+      // debugger
+      // vm.person = {
+      //   age:777
+      // };
+      // vm.person={}
+      // debugger
+      // vm.person.name=999;
+      // console.log(vm.person)
+      // vm.person={
+      //   name:999
+      // }
+      // debugger
+      // vm.person.name=777;
+
+      // arr[1]={
+      //   name:666
+      // };
+
+      // var arr = {
+      //   "0":{
+      //     name:1
+      //   },
+      //   "1":{
+      //     name:2
+      //   },
+      //   length:2
+      // }
+
 
 
     </script>
