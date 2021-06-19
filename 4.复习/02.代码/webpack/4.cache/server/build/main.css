@@ -1,0 +1,11 @@
+#app {
+  color: red;
+}
+
+#app{
+    font-size:100px;
+}
+html,body{
+    height:100%;
+    background:pink;
+}
