@@ -47,7 +47,7 @@ Vue.mixin({
 
 //渲染优先级: render属性>template属性>app元素内outerHtml
 new Vue({
-  // template:"<div>app</div>",
+  template:"<div>app</div>",
   // el:"#app",
   render: h => h(App),
   data(){

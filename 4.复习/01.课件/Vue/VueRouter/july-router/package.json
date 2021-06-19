@@ -1,0 +1,57 @@
+{
+  "_args": [
+    [
+      "july-router@1.0.0",
+      "D:\\尚硅谷课件\\尚硅谷\\教师资源\\学生资料\\毕业班\\SZ200910\\200910\\5.复习\\02.代码\\my-router"
+    ]
+  ],
+  "_from": "july-router@1.0.0",
+  "_id": "july-router@1.0.0",
+  "_inBundle": false,
+  "_integrity": "sha1-MOCTOxKJvpSnzutHD3qYCZfV35U=",
+  "_location": "/july-router",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "july-router@1.0.0",
+    "name": "july-router",
+    "escapedName": "july-router",
+    "rawSpec": "1.0.0",
+    "saveSpec": null,
+    "fetchSpec": "1.0.0"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npm.taobao.org/july-router/download/july-router-1.0.0.tgz",
+  "_spec": "1.0.0",
+  "_where": "D:\\尚硅谷课件\\尚硅谷\\教师资源\\学生资料\\毕业班\\SZ200910\\200910\\5.复习\\02.代码\\my-router",
+  "author": {
+    "name": "HotJuly"
+  },
+  "bugs": {
+    "url": "https://github.com/HotJuly/my-router/issues"
+  },
+  "dependencies": {
+    "vue": "^2.6.12"
+  },
+  "description": "imitate vue-router",
+  "homepage": "https://github.com/HotJuly/my-router#readme",
+  "keywords": [
+    "vue-router",
+    "router",
+    "my-router"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "july-router",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HotJuly/my-router.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.0"
+}
